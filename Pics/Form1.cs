@@ -99,7 +99,7 @@ namespace Pics
 
         private void log(string message)
         {
-            this.Invoke(new MethodInvoker(() => richTextBox1.Text += message));
+            this.Invoke(new MethodInvoker(() => richTextBox1.AppendText(message)));
         }
 
         private void Form1_Load(object sender, EventArgs e)
