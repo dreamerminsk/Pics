@@ -34,8 +34,14 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.mainPage = new System.Windows.Forms.TabPage();
+            this.logPage = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.logPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -74,11 +80,53 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.mainPage);
+            this.tabControl1.Controls.Add(this.logPage);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 25);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(800, 403);
+            this.tabControl1.TabIndex = 2;
+            // 
+            // mainPage
+            // 
+            this.mainPage.Location = new System.Drawing.Point(4, 22);
+            this.mainPage.Name = "mainPage";
+            this.mainPage.Padding = new System.Windows.Forms.Padding(3);
+            this.mainPage.Size = new System.Drawing.Size(792, 377);
+            this.mainPage.TabIndex = 0;
+            this.mainPage.Text = "main";
+            this.mainPage.UseVisualStyleBackColor = true;
+            // 
+            // logPage
+            // 
+            this.logPage.Controls.Add(this.richTextBox1);
+            this.logPage.Location = new System.Drawing.Point(4, 22);
+            this.logPage.Name = "logPage";
+            this.logPage.Padding = new System.Windows.Forms.Padding(3);
+            this.logPage.Size = new System.Drawing.Size(792, 377);
+            this.logPage.TabIndex = 1;
+            this.logPage.Text = "log";
+            this.logPage.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.Location = new System.Drawing.Point(3, 3);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(786, 371);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
@@ -88,6 +136,8 @@
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.logPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -100,6 +150,10 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage mainPage;
+        private System.Windows.Forms.TabPage logPage;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
