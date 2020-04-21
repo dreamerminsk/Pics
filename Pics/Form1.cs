@@ -14,6 +14,8 @@ namespace Pics
     public partial class Form1 : Form
     {
 
+        private DirectoryInfo current;
+
         public Form1()
         {
             InitializeComponent();
@@ -55,9 +57,15 @@ namespace Pics
         {
             try
             {
-                //Console.WriteLine(di.Name);
-                //toolStripStatusLabel1.Text = di.FullName;
+                current = di;
                 var fs = di.EnumerateFiles();
+                foreach (FileInfo f in fs)
+                {
+                    if (f.Name.ToUpper().EndsWith(".BMP"))
+                    {
+                        Console.WriteLine(f.FullName);
+                    }
+                }
                 var ds = di.EnumerateDirectories();
                 foreach (DirectoryInfo d in ds)
                     processFolder(d);
