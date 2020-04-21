@@ -16,6 +16,8 @@ namespace Pics
 
         private DirectoryInfo current;
 
+        private List<FileInfo> files = new List<FileInfo>();
+
         public Form1()
         {
             InitializeComponent();
@@ -48,7 +50,7 @@ namespace Pics
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -63,6 +65,8 @@ namespace Pics
                 {
                     if (f.Name.ToUpper().EndsWith(".BMP"))
                     {
+                        files.Add(f);
+                        toolStripStatusLabel1.Text = files.Count.ToString();
                         Console.WriteLine(f.FullName);
                     }
                 }
@@ -72,7 +76,7 @@ namespace Pics
             } 
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
             }
             
         }
