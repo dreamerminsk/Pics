@@ -29,7 +29,7 @@ namespace Pics
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            
+            toolStripButton1.Enabled = true;
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -85,6 +85,7 @@ namespace Pics
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             backgroundWorker1.RunWorkerAsync();
+            toolStripButton1.Enabled = false;
         }
     }
 }
