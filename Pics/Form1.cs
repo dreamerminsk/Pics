@@ -1,12 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Pics
@@ -36,19 +31,19 @@ namespace Pics
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            
+
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             var drives = DriveInfo.GetDrives();
-            foreach(DriveInfo drive in drives)
+            foreach (DriveInfo drive in drives)
             {
                 try
                 {
                     processFolder(drive.RootDirectory);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     //MessageBox.Show(ex.Message);
                 }
@@ -73,17 +68,17 @@ namespace Pics
                 var ds = di.EnumerateDirectories();
                 foreach (DirectoryInfo d in ds)
                     processFolder(d);
-            } 
+            }
             catch (Exception e)
             {
                 //MessageBox.Show(e.Message);
             }
-            
+
         }
 
         private void processBmp(FileInfo fi)
         {
-            richTextBox1.Text += fi.FullName + "\r\n";
+            this.Invoke(new MethodInvoker(() => richTextBox1.Text += fi.FullName + "\t" + fi.Length.ToString() +  "\r\n"));
         }
 
         private void Form1_Load(object sender, EventArgs e)
