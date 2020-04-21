@@ -78,7 +78,7 @@ namespace Pics
 
         private void processBmp(FileInfo fi)
         {
-            log("\r\n" + fi.Name + "\t" + fi.Length.ToString() + "\r\n");
+            log("\r\n\r\n\r\n" + fi.Name + "\t" + fi.Length.ToString() + "\r\n\r\n");
             FileStream fs = fi.OpenRead();
             try
             {
@@ -90,6 +90,9 @@ namespace Pics
                 log("Reserved2: " + (fs.ReadByte() + 256 * fs.ReadByte()).ToString() + "\r\n");
                 var fileOffset = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
                 log("FileOffset: " + fileOffset.ToString() + "\r\n");
+
+                var headerSize = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
+                log("HeaderSize: " + headerSize.ToString() + "\r\n");
             }
             finally
             {
