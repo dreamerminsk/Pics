@@ -67,7 +67,7 @@ namespace Pics
                     {
                         files.Add(f);
                         toolStripStatusLabel1.Text = files.Count.ToString();
-                        Console.WriteLine(f.FullName);
+                        processBmp(f);
                     }
                 }
                 var ds = di.EnumerateDirectories();
@@ -79,6 +79,11 @@ namespace Pics
                 //MessageBox.Show(e.Message);
             }
             
+        }
+
+        private void processBmp(FileInfo fi)
+        {
+            richTextBox1.Text += fi.FullName + "\r\n";
         }
 
         private void Form1_Load(object sender, EventArgs e)
