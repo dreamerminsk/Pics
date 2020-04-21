@@ -78,7 +78,22 @@ namespace Pics
 
         private void processBmp(FileInfo fi)
         {
-            this.Invoke(new MethodInvoker(() => richTextBox1.Text += fi.FullName + "\t" + fi.Length.ToString() +  "\r\n"));
+            log(fi.Name + "\t" + fi.Length.ToString() +  "\r\n");
+            FileStream fs = fi.OpenRead();
+            try 
+            {
+                var sign = (char)fs.ReadByte() + (char)fs.ReadByte();
+                log("Signature: " + sign);
+            } 
+            finally 
+            {
+                fs.Close(); 
+            }
+        }
+
+        private void log(string message)
+        {
+            this.Invoke(new MethodInvoker(() => richTextBox1.Text += message));
         }
 
         private void Form1_Load(object sender, EventArgs e)
