@@ -86,8 +86,8 @@ namespace Pics
                 log("Signature: " + sign + "\r\n");
                 var fileSize = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
                 log("FileSize: " + fileSize.ToString() + "\r\n");
-                log("Reserved1: " + (fs.ReadByte() + + 256 * fs.ReadByte()).ToString() + "\r\n");
-                log("Reserved2: " + (fs.ReadByte() + +256 * fs.ReadByte()).ToString() + "\r\n");
+                log("Reserved1: " + (fs.ReadByte() + 256 * fs.ReadByte()).ToString() + "\r\n");
+                log("Reserved2: " + (fs.ReadByte() + 256 * fs.ReadByte()).ToString() + "\r\n");
                 var fileOffset = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
                 log("FileOffset: " + fileOffset.ToString() + "\r\n");
             }
