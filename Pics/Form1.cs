@@ -78,16 +78,22 @@ namespace Pics
 
         private void processBmp(FileInfo fi)
         {
-            log(fi.Name + "\t" + fi.Length.ToString() +  "\r\n");
+            log("\r\n" + fi.Name + "\t" + fi.Length.ToString() + "\r\n");
             FileStream fs = fi.OpenRead();
-            try 
+            try
             {
-                var sign = (char)fs.ReadByte() + (char)fs.ReadByte();
-                log("Signature: " + sign);
-            } 
-            finally 
+                string sign = Char.ConvertFromUtf32(fs.ReadByte()) + Char.ConvertFromUtf32(fs.ReadByte());
+                log("Signature: " + sign + "\r\n");
+                var fileSize = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
+                log("FileSize: " + fileSize.ToString() + "\r\n");
+                log("Reserved1: " + (fs.ReadByte() + + 256 * fs.ReadByte()).ToString() + "\r\n");
+                log("Reserved2: " + (fs.ReadByte() + +256 * fs.ReadByte()).ToString() + "\r\n");
+                var fileOffset = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
+                log("FileOffset: " + fileOffset.ToString() + "\r\n");
+            }
+            finally
             {
-                fs.Close(); 
+                fs.Close();
             }
         }
 
