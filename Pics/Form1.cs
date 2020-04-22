@@ -92,7 +92,11 @@ namespace Pics
                 log("FileOffset: " + fileOffset.ToString() + "\r\n");
 
                 var headerSize = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
-                log("HeaderSize: " + headerSize.ToString() + "\r\n");
+                log("\r\nHeaderSize: " + headerSize.ToString() + "\r\n");
+                var imageWidth = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
+                log("ImageWidth: " + imageWidth.ToString() + "\r\n");
+                var imageHeight = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
+                log("ImageHeight: " + imageHeight.ToString() + "\r\n");
             }
             finally
             {
@@ -112,8 +116,22 @@ namespace Pics
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            backgroundWorker1.RunWorkerAsync();
-            toolStripButton1.Enabled = false;
+            if (backgroundWorker1.IsBusy)
+            {
+                backgroundWorker1.CancelAsync();
+            } 
+            else
+            {
+                backgroundWorker1.RunWorkerAsync();
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (backgroundWorker1.IsBusy)
+            {
+                backgroundWorker1.CancelAsync();
+            }
         }
     }
 }
