@@ -12,6 +12,7 @@ namespace Pics
         private DirectoryInfo current;
 
         private List<FileInfo> files = new List<FileInfo>();
+        private FileInfo currentFile;
 
         public Form1()
         {
@@ -119,7 +120,7 @@ namespace Pics
             if (backgroundWorker1.IsBusy)
             {
                 backgroundWorker1.CancelAsync();
-            } 
+            }
             else
             {
                 backgroundWorker1.RunWorkerAsync();
@@ -132,6 +133,27 @@ namespace Pics
             {
                 backgroundWorker1.CancelAsync();
             }
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                var fileName = openFileDialog1.FileName;
+                setCurrentFile(fileName);
+            }
+        }
+
+        private void setCurrentFile(string fileName)
+        {
+            this.currentFile = new FileInfo(fileName);
+            treeView1.Nodes.Clear();
+            treeView1.Nodes.Add(this.currentFile.Name);
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }
