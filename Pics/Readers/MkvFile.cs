@@ -28,10 +28,22 @@ namespace Pics.Readers
             var firstByte = stream.ReadByte();
             if (firstByte > 127)
             {
-                return new VInt((long)firstByte & 0x1FL);
+                return new VInt(firstByte & 0x7FL);
             }
-
-            return new VInt(0);
+            else if (firstByte > 63)
+            {
+                return new VInt((firstByte & 63L) << 8 + stream.ReadByte());
+            }
+            else if (firstByte > 31)
+            {
+                return new VInt((firstByte & 31L) << 16 + stream.ReadByte() << 8 + stream.ReadByte());
+            }
+            else if (firstByte > 15)
+            {
+                return new VInt((firstByte & 15L) << 24 + stream.ReadByte() << 16 + stream.ReadByte() << 8 + stream.ReadByte());
+            }
+            else
+                return new VInt(0);
         }
 
     }
