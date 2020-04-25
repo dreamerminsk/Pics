@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pics.Readers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -149,6 +150,20 @@ namespace Pics
             this.currentFile = new FileInfo(fileName);
             treeView1.Nodes.Clear();
             treeView1.Nodes.Add(this.currentFile.Name);
+            var fs = this.currentFile.OpenRead();
+            var id = VInt.ReadFrom(fs);
+            var size = VInt.ReadFrom(fs);
+            log(id.Value.ToString() + "\r\n");
+            log(size.Value.ToString() + "\r\n");
+            //fs.Position += size.Value;
+            id = VInt.ReadFrom(fs);
+            size = VInt.ReadFrom(fs);
+            log(id.Value.ToString() + "\r\n");
+            log(size.Value.ToString() + "\r\n");
+            id = VInt.ReadFrom(fs);
+            size = VInt.ReadFrom(fs);
+            log(id.Value.ToString() + "\r\n");
+            log(size.Value.ToString() + "\r\n");
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

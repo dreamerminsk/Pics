@@ -32,15 +32,15 @@ namespace Pics.Readers
             }
             else if (firstByte > 63)
             {
-                return new VInt((firstByte & 63L) << 8 + stream.ReadByte());
+                return new VInt(((firstByte & 63L) << 8) + stream.ReadByte());
             }
             else if (firstByte > 31)
             {
-                return new VInt((firstByte & 31L) << 16 + stream.ReadByte() << 8 + stream.ReadByte());
+                return new VInt(((firstByte & 31L) << 16) + (stream.ReadByte() << 8) + stream.ReadByte());
             }
             else if (firstByte > 15)
             {
-                return new VInt((firstByte & 15L) << 24 + stream.ReadByte() << 16 + stream.ReadByte() << 8 + stream.ReadByte());
+                return new VInt(((firstByte & 15L) << 24) + (stream.ReadByte() << 16) + (stream.ReadByte() << 8) + stream.ReadByte());
             }
             else
                 return new VInt(0);
