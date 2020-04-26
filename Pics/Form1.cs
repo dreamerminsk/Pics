@@ -1,5 +1,4 @@
-﻿using Pics.Readers;
-using Pics.Readers.Matroska;
+﻿using Pics.Readers.Matroska;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
