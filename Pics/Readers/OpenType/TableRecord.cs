@@ -1,25 +1,13 @@
 using System.Text;
 
-namespace SharpGlyph {
+namespace Pics.Readers.OpenType {
 	public class TableRecord {
-		/// <summary>
-		/// Table identifier.
-		/// </summary>
 		public string tableTag;
 
-		/// <summary>
-		/// CheckSum for this table.
-		/// </summary>
 		public uint checkSum;
 
-		/// <summary>
-		/// Offset from beginning of TrueType font file.
-		/// </summary>
 		public uint offset;
 
-		/// <summary>
-		/// Length of this table.
-		/// </summary>
 		public uint length;
 
 		public static TableRecord[] ReadArray(BinaryReaderFont reader, int count) {
