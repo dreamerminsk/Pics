@@ -1,4 +1,4 @@
-﻿using Pics.Readers.Matroska;
+﻿using Pics.Readers.OpenType;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -150,7 +150,14 @@ namespace Pics
             this.currentFile = new FileInfo(fileName);
             treeView1.Nodes.Clear();
             treeView1.Nodes.Add(this.currentFile.Name);
-            var fs = this.currentFile.OpenRead();
+            var fs = new OpenTypeFile(fileName);
+            listView1.Items.Clear();
+            var item = listView1.Items.Add("Offset Table");
+            item.SubItems.Add("0");
+            item.SubItems.Add("12");
+            item = listView1.Items.Add("Table Record entries");
+            item.SubItems.Add("12");
+            item.SubItems.Add("160");
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
