@@ -78,6 +78,7 @@
     <Compile Include="Readers\Matroska\VInt.cs" />
     <Compile Include="Readers\MkvFile.cs" />
     <Compile Include="Readers\OpenType\OpenTypeFile.cs" />
+    <Compile Include="View\Itemable.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
