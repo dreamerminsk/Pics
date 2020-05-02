@@ -23,6 +23,10 @@ namespace Pics.Readers.OpenType
             item.SubItems.Add("12");
             item.SubItems.Add("160");
             items.Add(item);
+            item = new ListViewItem("Table entries");
+            item.SubItems.Add("182");
+            item.SubItems.Add("160");
+            items.Add(item);
             return items;
         }
     }
