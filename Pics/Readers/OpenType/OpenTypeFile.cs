@@ -1,14 +1,24 @@
 ﻿using Pics.View;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Pics.Readers.OpenType
 {
     public class OpenTypeFile : IItemable
     {
+
+        private FileInfo fileInfo;
+
+        private BinaryReader reader;
+
         public OpenTypeFile(string fileName)
         {
-
+            fileInfo = new FileInfo(fileName);
+            if (fileInfo.Exists)
+            {
+                reader = new BinaryReader(fileInfo.OpenRead());
+            }
         }
 
         public List<ListViewItem> Items()
