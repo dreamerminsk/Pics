@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace Pics.Readers.OpenType
@@ -12,7 +13,7 @@ namespace Pics.Readers.OpenType
 
         public uint length;
 
-        public static TableRecord[] ReadArray(BinaryReaderFont reader, int count)
+        public static TableRecord[] ReadArray(BinaryReader reader, int count)
         {
             TableRecord[] array = new TableRecord[count];
             for (int i = 0; i < count; i++)
@@ -22,7 +23,7 @@ namespace Pics.Readers.OpenType
             return array;
         }
 
-        public static TableRecord Read(BinaryReaderFont reader)
+        public static TableRecord Read(BinaryReader reader)
         {
             return new TableRecord
             {

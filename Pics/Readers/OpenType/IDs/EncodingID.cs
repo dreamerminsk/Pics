@@ -1,4 +1,3 @@
-using System;
 namespace Pics.Readers.OpenType.IDs
 {
     public class EncodingID
