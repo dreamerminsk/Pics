@@ -18,9 +18,11 @@ namespace Pics.Readers.OpenType
             var item = new ListViewItem("Offset Table");
             item.SubItems.Add("0");
             item.SubItems.Add("12");
+            items.Add(item);
             item = new ListViewItem("Table Record entries");
             item.SubItems.Add("12");
             item.SubItems.Add("160");
+            items.Add(item);
             return items;
         }
     }

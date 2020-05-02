@@ -151,8 +151,10 @@ namespace Pics
             treeView1.Nodes.Clear();
             treeView1.Nodes.Add(this.currentFile.Name);
             var fs = new OpenTypeFile(fileName);
+            listView1.BeginUpdate();
             listView1.Items.Clear();
             listView1.Items.AddRange(fs.Items().ToArray());
+            listView1.EndUpdate();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
