@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text;
+using Pics.Readers.OpenType;
 
 namespace Pics.Readers.OpenType
 {

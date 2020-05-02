@@ -77,12 +77,12 @@
     <Compile Include="Readers\Matroska\EbmlMaster.cs" />
     <Compile Include="Readers\Matroska\VInt.cs" />
     <Compile Include="Readers\MkvFile.cs" />
+	<Compile Include="Readers\OpenType\Extensions.cs" />
     <Compile Include="Readers\OpenType\OpenTypeFile.cs" />
     <Compile Include="Readers\OpenType\TableRecord.cs" />
     <Compile Include="Readers\OpenType\IDs\EncodingID.cs" />
     <Compile Include="Readers\OpenType\IDs\NameID.cs" />
     <Compile Include="Readers\OpenType\IDs\PlatformID.cs" />
-    <Compile Include="Readers\OpenType\Utils.cs" />
     <Compile Include="View\IItemable.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

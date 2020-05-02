@@ -152,12 +152,7 @@ namespace Pics
             treeView1.Nodes.Add(this.currentFile.Name);
             var fs = new OpenTypeFile(fileName);
             listView1.Items.Clear();
-            var item = listView1.Items.Add("Offset Table");
-            item.SubItems.Add("0");
-            item.SubItems.Add("12");
-            item = listView1.Items.Add("Table Record entries");
-            item.SubItems.Add("12");
-            item.SubItems.Add("160");
+            listView1.Items.AddRange(fs.Items().ToArray());
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
