@@ -49,19 +49,19 @@ namespace Pics.Readers.OpenType
             item.SubItems.Add(NumTables.ToString());
             items.Add(item);
 
-            item = new ListViewItem("SearchRange");
+            item = new ListViewItem("searchRange");
             item.SubItems.Add((Position + 6).ToString());
             item.SubItems.Add(2.ToString());
             item.SubItems.Add(SearchRange.ToString());
             items.Add(item);
 
-            item = new ListViewItem("EntrySelector");
+            item = new ListViewItem("entrySelector");
             item.SubItems.Add((Position + 8).ToString());
             item.SubItems.Add(2.ToString());
             item.SubItems.Add(EntrySelector.ToString());
             items.Add(item);
 
-            item = new ListViewItem("RangeShift");
+            item = new ListViewItem("rangeShift");
             item.SubItems.Add((Position + 10).ToString());
             item.SubItems.Add(2.ToString());
             item.SubItems.Add(RangeShift.ToString());

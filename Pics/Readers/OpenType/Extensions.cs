@@ -11,7 +11,7 @@ namespace Pics.Readers.OpenType
             {
                 tag += (char)reader.ReadByte();
             }
-            return "";
+            return tag;
         }
     }
 }

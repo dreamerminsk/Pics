@@ -15,6 +15,8 @@ namespace Pics.Readers.OpenType
 
         private OffsetTable offsetTable;
 
+        private Tables tables;
+
         public OpenTypeFile(string fileName)
         {
             fileInfo = new FileInfo(fileName);
@@ -22,6 +24,7 @@ namespace Pics.Readers.OpenType
             {
                 reader = new ByteOrderSwappingBinaryReader(fileInfo.OpenRead());
                 offsetTable = OffsetTable.ReadFrom(reader);
+                tables = Tables.ReadFrom(reader, offsetTable.NumTables);
             }
         }
 
@@ -34,10 +37,13 @@ namespace Pics.Readers.OpenType
             item.SubItems.Add(offsetTable.Position.ToString());
             item.SubItems.Add(offsetTable.Size.ToString());
             items.Add(item);
+
             item = new ListViewItem("Table Record entries");
-            item.SubItems.Add("12");
-            item.SubItems.Add((16 * offsetTable.NumTables).ToString());
+            item.Tag = tables;
+            item.SubItems.Add(tables.Position.ToString());
+            item.SubItems.Add(tables.Size.ToString());
             items.Add(item);
+
             item = new ListViewItem("Table entries");
             item.SubItems.Add("182");
             item.SubItems.Add("160");

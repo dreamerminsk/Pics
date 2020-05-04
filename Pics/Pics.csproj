@@ -88,6 +88,7 @@
     <Compile Include="Readers\OpenType\IDs\EncodingID.cs" />
     <Compile Include="Readers\OpenType\IDs\NameID.cs" />
     <Compile Include="Readers\OpenType\IDs\PlatformID.cs" />
+    <Compile Include="Readers\OpenType\Tables.cs" />
     <Compile Include="View\IItemable.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
