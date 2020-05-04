@@ -1,4 +1,5 @@
 ﻿using Pics.Readers.OpenType;
+using Pics.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,10 +11,11 @@ namespace Pics
     public partial class Form1 : Form
     {
 
-        private DirectoryInfo current;
-
         private List<FileInfo> files = new List<FileInfo>();
         private FileInfo currentFile;
+
+        private IItemable current = null;
+        private Stack<IItemable> previous = new Stack<IItemable>();
 
         public Form1()
         {
@@ -147,13 +149,26 @@ namespace Pics
 
         private void setCurrentFile(string fileName)
         {
-            this.currentFile = new FileInfo(fileName);
+            currentFile = new FileInfo(fileName);
             treeView1.Nodes.Clear();
             treeView1.Nodes.Add(this.currentFile.Name);
             var fs = new OpenTypeFile(fileName);
+            setListViewContent(fs);
+        }
+
+        private void setListViewContent(IItemable content)
+        {
             listView1.BeginUpdate();
             listView1.Items.Clear();
-            listView1.Items.AddRange(fs.Items().ToArray());
+            if (current != null)
+            {
+                previous.Push(current);
+                ListViewItem prevItem = new ListViewItem("..");
+                prevItem.Tag = current;
+                listView1.Items.Add(prevItem);
+            }
+            current = content;            
+            listView1.Items.AddRange(content.Items().ToArray());
             listView1.EndUpdate();
         }
 
@@ -172,5 +187,23 @@ namespace Pics
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             foreach (string file in files) setCurrentFile(file);
         }
+
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+                var item = listView1.SelectedItems[0].Tag;
+                if (item == null)
+                {
+                    return;
+                }
+                if (typeof(IItemable).IsAssignableFrom(item.GetType()))
+                {
+                    setListViewContent((IItemable)item);
+                }
+            }
+
+        }
+
     }
 }

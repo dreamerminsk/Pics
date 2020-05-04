@@ -30,6 +30,7 @@ namespace Pics.Readers.OpenType
             var items = new List<ListViewItem>();
 
             var item = new ListViewItem("Offset Table");
+            item.Tag = offsetTable;
             item.SubItems.Add("0");
             item.SubItems.Add("12");
             items.Add(item);
