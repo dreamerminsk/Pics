@@ -7,12 +7,13 @@ namespace Pics.Readers.OpenType
 {
     public class OffsetTable : IItemable
     {
-        private long pos = 0;
-
         public OffsetTable()
         {
 
         }
+
+        public long Position { get; set; } = 0;
+        public long Size { get; } = 12;
 
         public uint SfntVersion { get; set; }
         public ushort NumTables { get; set; }
@@ -23,8 +24,12 @@ namespace Pics.Readers.OpenType
         public static OffsetTable ReadFrom(BinaryReader reader)
         {
             var offsetTable = new OffsetTable();
+            offsetTable.Position = reader.BaseStream.Position;
             offsetTable.SfntVersion = reader.ReadUInt32();
             offsetTable.NumTables = reader.ReadUInt16();
+            offsetTable.SearchRange = reader.ReadUInt16();
+            offsetTable.EntrySelector = reader.ReadUInt16();
+            offsetTable.RangeShift = reader.ReadUInt16();
             return offsetTable;
         }
 
@@ -33,28 +38,33 @@ namespace Pics.Readers.OpenType
             var items = new List<ListViewItem>();
 
             var item = new ListViewItem("sfntVersion");
-            item.SubItems.Add(pos.ToString());
-            item.SubItems.Add(sizeof(uint).ToString());
+            item.SubItems.Add(Position.ToString());
+            item.SubItems.Add(4.ToString());
+            item.SubItems.Add(SfntVersion.ToString("X"));
             items.Add(item);
 
             item = new ListViewItem("numTables");
-            item.SubItems.Add((pos + sizeof(uint)).ToString());
-            item.SubItems.Add(sizeof(ushort).ToString());
+            item.SubItems.Add((Position + 4).ToString());
+            item.SubItems.Add(2.ToString());
+            item.SubItems.Add(NumTables.ToString());
             items.Add(item);
 
-            item = new ListViewItem("searchRange");
-            item.SubItems.Add((pos + sizeof(uint) + sizeof(ushort)).ToString());
-            item.SubItems.Add(sizeof(ushort).ToString());
+            item = new ListViewItem("SearchRange");
+            item.SubItems.Add((Position + 6).ToString());
+            item.SubItems.Add(2.ToString());
+            item.SubItems.Add(SearchRange.ToString());
             items.Add(item);
 
-            item = new ListViewItem("entrySelector");
-            item.SubItems.Add((pos + sizeof(uint) + 2 * sizeof(ushort)).ToString());
-            item.SubItems.Add(sizeof(ushort).ToString());
+            item = new ListViewItem("EntrySelector");
+            item.SubItems.Add((Position + 8).ToString());
+            item.SubItems.Add(2.ToString());
+            item.SubItems.Add(EntrySelector.ToString());
             items.Add(item);
 
-            item = new ListViewItem("rangeShift");
-            item.SubItems.Add((pos + sizeof(uint) + 3 * sizeof(ushort)).ToString());
-            item.SubItems.Add(sizeof(ushort).ToString());
+            item = new ListViewItem("RangeShift");
+            item.SubItems.Add((Position + 10).ToString());
+            item.SubItems.Add(2.ToString());
+            item.SubItems.Add(RangeShift.ToString());
             items.Add(item);
             return items;
         }

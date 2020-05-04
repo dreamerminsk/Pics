@@ -60,11 +60,18 @@ namespace Pics
 
         private void setCurrentFile(string fileName)
         {
+            if (!File.Exists(fileName))
+            {
+                return;
+            }
+            previous.Clear();
+            current = null;
             treeView1.Nodes.Clear();
             treeView1.Nodes.Add(new FileInfo(fileName).Name);
             var fs = new OpenTypeFile(fileName);
             setListViewContent(fs);
             Properties.Settings.Default.LastFont = fileName;
+            Properties.Settings.Default.Save();
         }
 
         private void setUpListViewContent()

@@ -31,8 +31,8 @@ namespace Pics.Readers.OpenType
 
             var item = new ListViewItem("Offset Table");
             item.Tag = offsetTable;
-            item.SubItems.Add("0");
-            item.SubItems.Add("12");
+            item.SubItems.Add(offsetTable.Position.ToString());
+            item.SubItems.Add(offsetTable.Size.ToString());
             items.Add(item);
             item = new ListViewItem("Table Record entries");
             item.SubItems.Add("12");

@@ -25,7 +25,7 @@ namespace Pics.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Users\\User\\Downloads\\Fonts\\Шрифты\\Medieval Initial One Regular.ttf")]
         public string LastFont {
             get {
                 return ((string)(this["LastFont"]));
