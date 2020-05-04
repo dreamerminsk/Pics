@@ -2,7 +2,6 @@
 using Pics.View;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
@@ -11,101 +10,12 @@ namespace Pics
     public partial class Form1 : Form
     {
 
-        private List<FileInfo> files = new List<FileInfo>();
-        private FileInfo currentFile;
-
         private IItemable current = null;
         private Stack<IItemable> previous = new Stack<IItemable>();
 
         public Form1()
         {
             InitializeComponent();
-
-            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
-            backgroundWorker1.ProgressChanged += backgroundWorker1_ProgressChanged;
-            backgroundWorker1.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
-            backgroundWorker1.WorkerReportsProgress = true;
-            backgroundWorker1.WorkerSupportsCancellation = true;
-        }
-
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            toolStripButton1.Enabled = true;
-        }
-
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-
-        }
-
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            var drives = DriveInfo.GetDrives();
-            foreach (DriveInfo drive in drives)
-            {
-                try
-                {
-                    processFolder(drive.RootDirectory);
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show(ex.Message);
-                }
-            }
-        }
-
-        private void processFolder(DirectoryInfo di)
-        {
-            try
-            {
-                current = di;
-                var fs = di.EnumerateFiles();
-                foreach (FileInfo f in fs)
-                {
-                    if (f.Name.ToUpper().EndsWith(".BMP"))
-                    {
-                        files.Add(f);
-                        toolStripStatusLabel1.Text = files.Count.ToString();
-                        processBmp(f);
-                    }
-                }
-                var ds = di.EnumerateDirectories();
-                foreach (DirectoryInfo d in ds)
-                    processFolder(d);
-            }
-            catch (Exception e)
-            {
-                //MessageBox.Show(e.Message);
-            }
-
-        }
-
-        private void processBmp(FileInfo fi)
-        {
-            log("\r\n\r\n\r\n" + fi.Name + "\t" + fi.Length.ToString() + "\r\n\r\n");
-            FileStream fs = fi.OpenRead();
-            try
-            {
-                string sign = Char.ConvertFromUtf32(fs.ReadByte()) + Char.ConvertFromUtf32(fs.ReadByte());
-                log("Signature: " + sign + "\r\n");
-                var fileSize = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
-                log("FileSize: " + fileSize.ToString() + "\r\n");
-                log("Reserved1: " + (fs.ReadByte() + 256 * fs.ReadByte()).ToString() + "\r\n");
-                log("Reserved2: " + (fs.ReadByte() + 256 * fs.ReadByte()).ToString() + "\r\n");
-                var fileOffset = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
-                log("FileOffset: " + fileOffset.ToString() + "\r\n");
-
-                var headerSize = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
-                log("\r\nHeaderSize: " + headerSize.ToString() + "\r\n");
-                var imageWidth = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
-                log("ImageWidth: " + imageWidth.ToString() + "\r\n");
-                var imageHeight = fs.ReadByte() + 256 * fs.ReadByte() + 256 * 256 * fs.ReadByte() + 256 * 256 * 256 * fs.ReadByte();
-                log("ImageHeight: " + imageHeight.ToString() + "\r\n");
-            }
-            finally
-            {
-                fs.Close();
-            }
         }
 
         private void log(string message)
@@ -115,7 +25,8 @@ namespace Pics
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            var lastFontName = Properties.Settings.Default.LastFont;
+            setCurrentFile(lastFontName);
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -149,11 +60,25 @@ namespace Pics
 
         private void setCurrentFile(string fileName)
         {
-            currentFile = new FileInfo(fileName);
             treeView1.Nodes.Clear();
-            treeView1.Nodes.Add(this.currentFile.Name);
+            treeView1.Nodes.Add(new FileInfo(fileName).Name);
             var fs = new OpenTypeFile(fileName);
             setListViewContent(fs);
+        }
+
+        private void setUpListViewContent()
+        {
+            listView1.BeginUpdate();
+            listView1.Items.Clear();
+            current = previous.Pop();
+            if (previous.Count > 0)
+            {
+                ListViewItem prevItem = new ListViewItem("..");
+                prevItem.Tag = previous.Peek();
+                listView1.Items.Add(prevItem);
+            }
+            listView1.Items.AddRange(current.Items().ToArray());
+            listView1.EndUpdate();
         }
 
         private void setListViewContent(IItemable content)
@@ -167,7 +92,7 @@ namespace Pics
                 prevItem.Tag = current;
                 listView1.Items.Add(prevItem);
             }
-            current = content;            
+            current = content;
             listView1.Items.AddRange(content.Items().ToArray());
             listView1.EndUpdate();
         }
@@ -192,14 +117,20 @@ namespace Pics
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                var item = listView1.SelectedItems[0].Tag;
-                if (item == null)
+                var item = listView1.SelectedItems[0];
+                if (item.Text.Equals(".."))
+                {
+                    setUpListViewContent();
+                    return;
+                }
+                var tag = item.Tag;
+                if (tag == null)
                 {
                     return;
                 }
-                if (typeof(IItemable).IsAssignableFrom(item.GetType()))
+                if (typeof(IItemable).IsAssignableFrom(tag.GetType()))
                 {
-                    setListViewContent((IItemable)item);
+                    setListViewContent((IItemable)tag);
                 }
             }
 
