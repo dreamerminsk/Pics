@@ -64,6 +64,7 @@ namespace Pics
             treeView1.Nodes.Add(new FileInfo(fileName).Name);
             var fs = new OpenTypeFile(fileName);
             setListViewContent(fs);
+            Properties.Settings.Default.LastFont = fileName;
         }
 
         private void setUpListViewContent()
