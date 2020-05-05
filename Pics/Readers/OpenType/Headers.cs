@@ -1,5 +1,4 @@
 ﻿using Pics.View;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Pics.Readers.OpenType
 {
-    public class Tables : IEnumerable<TableRecord>, IItemable
+    public class Headers : IEnumerable<TableRecord>, IItemable
     {
 
         public long Position { get; set; } = 0;
@@ -15,21 +14,21 @@ namespace Pics.Readers.OpenType
 
         public List<TableRecord> Entries { get; } = new List<TableRecord>();
 
-        public Tables()
+        public Headers()
         {
 
         }
 
-        public static Tables ReadFrom(BinaryReader reader, int tableCount)
+        public static Headers ReadFrom(BinaryReader reader, int tableCount)
         {
-            var tables = new Tables();
-            tables.Position = reader.BaseStream.Position;
-            tables.Size = 16 * tableCount;
+            var headers = new Headers();
+            headers.Position = reader.BaseStream.Position;
+            headers.Size = 16 * tableCount;
             for (int i = 0; i < tableCount; i++)
             {
-                tables.Entries.Add(TableRecord.ReadFrom(reader));
+                headers.Entries.Add(TableRecord.ReadFrom(reader));
             }
-            return tables;
+            return headers;
         }
 
         public List<ListViewItem> Items()

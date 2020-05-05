@@ -2,6 +2,7 @@
 using Pics.View;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Pics.Readers.OpenType
@@ -15,7 +16,7 @@ namespace Pics.Readers.OpenType
 
         private OffsetTable offsetTable;
 
-        private Tables tables;
+        private Headers tables;
 
         public OpenTypeFile(string fileName)
         {
@@ -24,7 +25,7 @@ namespace Pics.Readers.OpenType
             {
                 reader = new ByteOrderSwappingBinaryReader(fileInfo.OpenRead());
                 offsetTable = OffsetTable.ReadFrom(reader);
-                tables = Tables.ReadFrom(reader, offsetTable.NumTables);
+                tables = Headers.ReadFrom(reader, offsetTable.NumTables);
             }
         }
 
@@ -34,19 +35,19 @@ namespace Pics.Readers.OpenType
 
             var item = new ListViewItem("Offset Table");
             item.Tag = offsetTable;
-            item.SubItems.Add(offsetTable.Position.ToString());
-            item.SubItems.Add(offsetTable.Size.ToString());
+            item.SubItems.Add(offsetTable.Position.ToSize());
+            item.SubItems.Add(offsetTable.Size.ToSize());
             items.Add(item);
 
             item = new ListViewItem("Table Record entries");
             item.Tag = tables;
-            item.SubItems.Add(tables.Position.ToString());
-            item.SubItems.Add(tables.Size.ToString());
+            item.SubItems.Add(tables.Position.ToSize());
+            item.SubItems.Add(tables.Size.ToSize());
             items.Add(item);
 
             item = new ListViewItem("Table entries");
-            item.SubItems.Add("182");
-            item.SubItems.Add("160");
+            item.SubItems.Add(tables.Min(x => x.Offset).ToSize());
+            item.SubItems.Add(tables.Sum(x => x.Length).ToSize());
             items.Add(item);
             return items;
         }

@@ -4,6 +4,9 @@ namespace Pics.Readers.OpenType
 {
     public static class Extensions
     {
+
+        public static readonly string SIZE_FORMAT = "###,###";
+
         public static string ReadTag(this BinaryReader reader)
         {
             string tag = "";
@@ -12,6 +15,16 @@ namespace Pics.Readers.OpenType
                 tag += (char)reader.ReadByte();
             }
             return tag;
+        }
+
+        public static string ToSize(this long number)
+        {
+            return number.ToString(SIZE_FORMAT);
+        }
+
+        public static string ToSize(this uint number)
+        {
+            return number.ToString(SIZE_FORMAT);
         }
     }
 }
