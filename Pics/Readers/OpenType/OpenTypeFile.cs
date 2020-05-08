@@ -28,7 +28,7 @@ namespace Pics.Readers.OpenType
                 reader = new ByteOrderSwappingBinaryReader(fileInfo.OpenRead());
                 offsetTable = OffsetTable.ReadFrom(reader);
                 headers = Headers.ReadFrom(reader, offsetTable.NumTables);
-                tables = new Tables(headers);
+                tables = new Tables(headers, reader);
             }
         }
 

@@ -6,13 +6,13 @@ using System.Windows.Forms;
 
 namespace Pics.Readers.OpenType
 {
-    public class Headers : IEnumerable<TableRecord>, IItemable
+    public class Headers : IEnumerable<TableHeader>, IItemable
     {
 
         public long Position { get; set; } = 0;
         public long Size { get; set; } = 0;
 
-        public List<TableRecord> Entries { get; } = new List<TableRecord>();
+        public List<TableHeader> Entries { get; } = new List<TableHeader>();
 
         public Headers()
         {
@@ -26,7 +26,7 @@ namespace Pics.Readers.OpenType
             headers.Size = 16 * tableCount;
             for (int i = 0; i < tableCount; i++)
             {
-                headers.Entries.Add(TableRecord.ReadFrom(reader));
+                headers.Entries.Add(TableHeader.ReadFrom(reader));
             }
             return headers;
         }
@@ -35,7 +35,7 @@ namespace Pics.Readers.OpenType
         {
             var items = new List<ListViewItem>();
 
-            foreach (TableRecord table in Entries)
+            foreach (TableHeader table in Entries)
             {
                 var item = new ListViewItem(table.TableTag);
                 item.SubItems.Add(table.Position.ToString());
@@ -46,7 +46,7 @@ namespace Pics.Readers.OpenType
             return items;
         }
 
-        public IEnumerator<TableRecord> GetEnumerator()
+        public IEnumerator<TableHeader> GetEnumerator()
         {
             return Entries.GetEnumerator();
         }

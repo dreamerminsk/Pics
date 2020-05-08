@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Pics.Readers.OpenType
 {
-    public class TableRecord
+    public class TableHeader
     {
 
         public long Position { get; set; } = 0;
@@ -12,9 +12,9 @@ namespace Pics.Readers.OpenType
         public uint Offset { get; set; }
         public uint Length { get; set; }
 
-        public static TableRecord ReadFrom(BinaryReader reader)
+        public static TableHeader ReadFrom(BinaryReader reader)
         {
-            return new TableRecord
+            return new TableHeader
             {
                 Position = reader.BaseStream.Position,
                 TableTag = reader.ReadTag(),
