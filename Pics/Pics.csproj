@@ -82,6 +82,7 @@
     <Compile Include="Readers\Matroska\VInt.cs" />
     <Compile Include="Readers\MkvFile.cs" />
     <Compile Include="Readers\OpenType\Extensions.cs" />
+    <Compile Include="Readers\OpenType\Table\FpgmTable.cs" />
     <Compile Include="Readers\OpenType\OffsetTable.cs" />
     <Compile Include="Readers\OpenType\OpenTypeFile.cs" />
     <Compile Include="Readers\OpenType\TableHeader.cs" />
@@ -91,6 +92,8 @@
     <Compile Include="Readers\OpenType\Headers.cs" />
     <Compile Include="Readers\OpenType\Tables.cs" />
     <Compile Include="Readers\OpenType\Table\HeadTable.cs" />
+    <Compile Include="Readers\OpenType\Table\OpCodes.cs" />
+    <Compile Include="Readers\OpenType\Table\PrepTable.cs" />
     <Compile Include="Readers\OpenType\Table\TableEntry.cs" />
     <Compile Include="View\IItemable.cs" />
     <EmbeddedResource Include="Form1.resx">

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace Pics.Readers.OpenType.Table
 {
     public abstract class TableEntry
     {
-        public TableEntry()
+        public TableEntry(TableHeader header)
         {
+            this.Header = header;
         }
         public TableHeader Header { get; set; }
         public abstract void ReadFrom(BinaryReader reader);
