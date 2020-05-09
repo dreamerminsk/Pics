@@ -8,18 +8,11 @@ using System.Windows.Forms;
 namespace Pics.Readers.OpenType
 {
 
-    public class OpenTypeItem
+    public interface OpenTypeItem
     {
         private BinaryReader reader;
         
-        public List<ListViewItem> Items()
-            item.Tag = headers;
-
-            item.SubItems.Add(headers.Position.ToSize());
-
-            item.SubItems.Add(headers.Size.ToSize());
-
-            
+        public List<OpenTypeItem> Items();
 
     }
 
