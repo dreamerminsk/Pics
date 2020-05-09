@@ -10,8 +10,7 @@ namespace Pics
     public partial class Form1 : Form
     {
 
-        private IItemable current = null;
-        private Stack<IItemable> previous = new Stack<IItemable>();
+        private OpenTypeItem current = null;
 
         public Form1()
         {
@@ -64,7 +63,6 @@ namespace Pics
             {
                 return;
             }
-            previous.Clear();
             current = null;
             treeView1.Nodes.Clear();
             treeView1.Nodes.Add(new FileInfo(fileName).Name);
@@ -89,7 +87,7 @@ namespace Pics
             listView1.EndUpdate();
         }
 
-        private void setListViewContent(IItemable content)
+        private void setListViewContent(OpenTypeItem content)
         {
             listView1.BeginUpdate();
             listView1.Items.Clear();
