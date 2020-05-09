@@ -10,9 +10,10 @@ namespace Pics.Readers.OpenType
 
     public interface OpenTypeItem
     {
-        private BinaryReader reader;
+
+        public abstract OpenTypeItem Parent { get; set; }
         
-        public List<OpenTypeItem> Items();
+        public abstract List<OpenTypeItem> Items { get; set; }
 
     }
 
