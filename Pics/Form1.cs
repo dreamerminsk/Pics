@@ -93,7 +93,6 @@ namespace Pics
             listView1.Items.Clear();
             if (current != null)
             {
-                previous.Push(current);
                 ListViewItem prevItem = new ListViewItem("..");
                 prevItem.Tag = current;
                 listView1.Items.Add(prevItem);
