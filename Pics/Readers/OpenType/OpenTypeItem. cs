@@ -1,50 +1,22 @@
 using Pics.Readers.IO;
-
 using Pics.View;
-
 using System.Collections.Generic;
-
 using System.IO;
-
 using System.Linq;
-
 using System.Windows.Forms;
 
 namespace Pics.Readers.OpenType
-
 {
 
     public class OpenTypeItem
     {
         private BinaryReader reader;
 
-        private OffsetTable offsetTable;
-
-        private Headers headers;
-
-
         public OpenTypeFile(string fileName)
 
         {
 
             fileInfo = new FileInfo(fileName);
-
-            if (fileInfo.Exists)
-
-            {
-
-                reader = new ByteOrderSwappingBinaryReader(fileInfo.OpenRead());
-
-                offsetTable = OffsetTable.ReadFrom(reader);
-
-                headers = Headers.ReadFrom(reader, offsetTable.NumTables);
-
-                tables = new Tables(headers, reader);
-
-            }
-
-        }
-
         public List<ListViewItem> Items()
 
         {
