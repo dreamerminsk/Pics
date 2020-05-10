@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Pics.Readers.OpenType
 {
-    public class OffsetTable : IItemable
+    public class OffsetTable : IItemable, OpenTypeItem
     {
         public OffsetTable()
         {
@@ -20,6 +20,10 @@ namespace Pics.Readers.OpenType
         public ushort SearchRange { get; set; }
         public ushort EntrySelector { get; set; }
         public ushort RangeShift { get; set; }
+
+        public OpenTypeItem Parent => null;
+
+        List<OpenTypeItem> OpenTypeItem.Items => new List<OpenTypeItem>();
 
         public static OffsetTable ReadFrom(BinaryReader reader)
         {

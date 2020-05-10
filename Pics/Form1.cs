@@ -1,7 +1,6 @@
 ﻿using Pics.Readers.OpenType;
 using Pics.View;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -98,7 +97,7 @@ namespace Pics
                 listView1.Items.Add(prevItem);
             }
             current = content;
-            listView1.Items.AddRange(content.Items().ToArray());
+            listView1.Items.AddRange(content.Items.ToArray());
             listView1.EndUpdate();
         }
 

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Pics.Readers.OpenType
 {
-    public class OpenTypeFile : IItemable
+    public class OpenTypeFile : IItemable, OpenTypeItem
     {
 
         private FileInfo fileInfo;
@@ -30,6 +30,16 @@ namespace Pics.Readers.OpenType
                 headers = Headers.ReadFrom(reader, offsetTable.NumTables);
                 tables = new Tables(headers, reader);
             }
+        }
+
+        public OpenTypeItem Parent { get => null; }
+        List<OpenTypeItem> OpenTypeItem.Items { get=>OpenItems(); }
+
+        public List<OpenTypeItem> OpenItems()
+        {
+            var items = new List<OpenTypeItem>();
+            items.Add(offsetTable);
+            return items;
         }
 
         public List<ListViewItem> Items()
