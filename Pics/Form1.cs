@@ -126,9 +126,9 @@ namespace Pics
                 {
                     return;
                 }
-                if (typeof(IItemable).IsAssignableFrom(tag.GetType()))
+                if (typeof(OpenTypeItem).IsAssignableFrom(tag.GetType()))
                 {
-                    setListViewContent((IItemable)tag);
+                    setListViewContent((OpenTypeItem)tag);
                 }
             }
 
