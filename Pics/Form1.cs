@@ -73,17 +73,11 @@ namespace Pics
 
         private void setUpListViewContent()
         {
-            listView1.BeginUpdate();
-            listView1.Items.Clear();
-            current = previous.Pop();
-            if (previous.Count > 0)
+            if (current.Parent != null)
             {
-                ListViewItem prevItem = new ListViewItem("..");
-                prevItem.Tag = previous.Peek();
-                listView1.Items.Add(prevItem);
+                setListViewContent(current.Parent);
             }
-            listView1.Items.AddRange(current.Items.ToArray());
-            listView1.EndUpdate();
+
         }
 
         private void setListViewContent(OpenTypeItem content)
