@@ -1,4 +1,4 @@
-﻿using Pics.Readers.OpenType;
+﻿using Pics.OpenType;
 using Pics.View;
 using System;
 using System.IO;
@@ -82,7 +82,7 @@ namespace Pics
                 prevItem.Tag = previous.Peek();
                 listView1.Items.Add(prevItem);
             }
-            listView1.Items.AddRange(current.Items().ToArray());
+            listView1.Items.AddRange(current.Items.ToArray());
             listView1.EndUpdate();
         }
 

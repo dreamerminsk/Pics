@@ -1,10 +1,9 @@
-﻿using Pics.Readers.OpenType.Table;
-using Pics.View;
+﻿using Pics.View;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Pics.Readers.OpenType
+namespace Pics.OpenType.Table
 {
     public class FpgmTable : TableEntry, IItemable
     {

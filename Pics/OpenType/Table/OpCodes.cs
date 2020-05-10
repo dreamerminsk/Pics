@@ -1,4 +1,4 @@
-﻿namespace Pics.Readers.OpenType.Table
+﻿namespace Pics.OpenType.Table
 {
     class OpCodes
     {

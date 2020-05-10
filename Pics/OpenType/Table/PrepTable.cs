@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Pics.Readers.OpenType.Table
+namespace Pics.OpenType.Table
 {
     public class PrepTable : TableEntry, IItemable
     {

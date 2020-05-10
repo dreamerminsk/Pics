@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Pics.Readers.OpenType
+namespace Pics.OpenType
 {
 
     public interface OpenTypeItem

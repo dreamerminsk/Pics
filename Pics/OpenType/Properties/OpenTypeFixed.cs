@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Pics.OpenType.Properties
 {
-    public class OpenTypeUInt8 : OpenTypeProperty
+    public class OpenTypeFixed : OpenTypeProperty
     {
         public OpenTypeItem Parent => throw new System.NotImplementedException();
 

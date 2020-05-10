@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Pics.Readers.OpenType
+namespace Pics.OpenType
 {
     public static class Extensions
     {

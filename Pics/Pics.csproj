@@ -73,12 +73,24 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="OpenType\Properties\OpenTypeF2DOT14.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeFixed.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeFWORD.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeInt16.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeInt32.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeInt8.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeLONGDATETIME.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeTag.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeUFWORD.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeUInt16.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeUInt24.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeUInt32.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OpenType\IO\ByteOrderSwappingBinaryReader.cs" />
     <Compile Include="OpenType\Extensions.cs" />
     <Compile Include="OpenType\Properties\OpenTypeUInt8.cs" />
-    <Compile Include="OpenType\Properties\Property.cs" />
+    <Compile Include="OpenType\Properties\OpenTypeProperty.cs" />
     <Compile Include="OpenType\Table\FpgmTable.cs" />
     <Compile Include="OpenType\OffsetTable.cs" />
     <Compile Include="OpenType\OpenTypeFile.cs" />

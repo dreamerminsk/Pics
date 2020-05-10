@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Pics.Readers.OpenType.Table
+namespace Pics.OpenType.Table
 {
     public abstract class TableEntry
     {

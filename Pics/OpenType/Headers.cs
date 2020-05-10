@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Pics.Readers.OpenType
+namespace Pics.OpenType
 {
     public class Headers : IEnumerable<TableHeader>, IItemable
     {
