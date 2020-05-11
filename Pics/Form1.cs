@@ -73,7 +73,7 @@ namespace Pics
 
         private void setUpListViewContent()
         {
-            if (current.Parent != null)
+            if (current != null)
             {
                 setListViewContent(current.Parent);
             }
@@ -84,15 +84,22 @@ namespace Pics
         {
             listView1.BeginUpdate();
             listView1.Items.Clear();
-            if (current != null)
+            if (content != null)
             {
                 ListViewItem prevItem = new ListViewItem("..");
-                prevItem.Tag = current;
+                prevItem.Tag = content;
                 listView1.Items.Add(prevItem);
+                current = content;
+                var children = content.Items.Select(x => ItemToView(x));
+                listView1.Items.AddRange(children.ToArray());
             }
-            current = content;
-            var children = content.Items.Select(x => ItemToView(x));
-            listView1.Items.AddRange(children.ToArray());
+            else
+            {
+                //current = content;
+                //var children = content.Items.Select(x => ItemToView(x));
+                listView1.Items.Add(ItemToView(current));
+            }
+            
             listView1.EndUpdate();
 
             ListViewItem ItemToView(OpenTypeItem x)
