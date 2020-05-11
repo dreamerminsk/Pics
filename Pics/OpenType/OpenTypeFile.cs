@@ -23,7 +23,7 @@ namespace Pics.OpenType
             if (fileInfo.Exists)
             {
                 reader = new ByteOrderSwappingBinaryReader(fileInfo.OpenRead());
-                offsetTable = OffsetTable.ReadFrom(reader);
+                offsetTable = new OffsetTable(this);
                 headers = Headers.ReadFrom(reader, offsetTable.NumTables);
                 tables = new Tables(headers, reader);
             }

@@ -91,14 +91,17 @@ namespace Pics
                 listView1.Items.Add(prevItem);
             }
             current = content;
-            var children = content.Items.Select(x =>
-            {
-                var y = new ListViewItem(x.Title);
-                y.SubItems.Add(x.Position.ToSize());
-                return y;
-            });
+            var children = content.Items.Select(x => ItemToView(x));
             listView1.Items.AddRange(children.ToArray());
             listView1.EndUpdate();
+
+            ListViewItem ItemToView(OpenTypeItem x)
+            {
+                var y = new ListViewItem(x.Title);
+                y.SubItems.Add((x.Position+0).ToSize());
+                y.SubItems.Add(x.Size.ToSize());
+                return y;
+            }
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

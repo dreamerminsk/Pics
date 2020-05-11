@@ -5,7 +5,7 @@ namespace Pics.OpenType
     public static class Extensions
     {
 
-        public static readonly string SIZE_FORMAT = "###,###";
+        public static readonly string SIZE_FORMAT = "###,###0";
 
         public static string ReadTag(this BinaryReader reader)
         {
