@@ -41,10 +41,8 @@ namespace Pics
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (backgroundWorker1.IsBusy)
-            {
-                backgroundWorker1.CancelAsync();
-            }
+
+
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -107,6 +105,7 @@ namespace Pics
                 var y = new ListViewItem(x.Title);
                 y.SubItems.Add((x.Position+0).ToSize());
                 y.SubItems.Add(x.Size.ToSize());
+                y.Tag = x;
                 return y;
             }
         }
