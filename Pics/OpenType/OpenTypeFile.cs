@@ -1,12 +1,10 @@
-﻿using Pics.View;
+﻿using Pics.OpenType.IO;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace Pics.OpenType
 {
-    public class OpenTypeFile : IItemable, OpenTypeItem
+    public class OpenTypeFile : OpenTypeItem
     {
 
         private FileInfo fileInfo;
@@ -31,7 +29,10 @@ namespace Pics.OpenType
             }
         }
 
-        public OpenTypeItem Parent { get => null; }
+        public long Position { get => 0; }
+        public long Size { get => reader.BaseStream.Length; }
+        public string Title { get => fileInfo.Name; }
+        OpenTypeItem OpenTypeItem.Parent { get => null; }
         List<OpenTypeItem> OpenTypeItem.Items { get => OpenItems(); }
 
         public List<OpenTypeItem> OpenItems()
@@ -43,32 +44,5 @@ namespace Pics.OpenType
             return items;
         }
 
-        public List<ListViewItem> Items()
-        {
-            var items = new List<ListViewItem>();
-
-            var item = new ListViewItem("Offset Table");
-            item.Tag = offsetTable;
-            item.SubItems.Add(offsetTable.Position.ToSize());
-            item.SubItems.Add(offsetTable.Size.ToSize());
-            items.Add(item);
-
-            item = new ListViewItem("Table Record entries")
-            {
-                Tag = headers
-            };
-            item.SubItems.Add(headers.Position.ToSize());
-            item.SubItems.Add(headers.Size.ToSize());
-            items.Add(item);
-
-            item = new ListViewItem("Table entries")
-            {
-                Tag = tables
-            };
-            item.SubItems.Add(headers.Min(x => x.Offset).ToSize());
-            item.SubItems.Add(headers.Sum(x => x.Length).ToSize());
-            items.Add(item);
-            return items;
-        }
     }
 }

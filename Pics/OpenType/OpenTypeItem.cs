@@ -5,12 +5,12 @@ namespace Pics.OpenType
 
     public interface OpenTypeItem
     {
-        
-        long Position { get; set; }
-        
-        long Size { get; set; }
-        
-        string Title { get; set; }
+
+        long Position { get; }
+
+        long Size { get; }
+
+        string Title { get; }
 
         OpenTypeItem Parent { get; }
 

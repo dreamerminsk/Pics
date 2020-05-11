@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Pics.Readers.IO
+namespace Pics.OpenType.IO
 {
     public class ByteOrderSwappingBinaryReader : BinaryReader
     {

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Pics.OpenType.Properties
+﻿namespace Pics.OpenType.Properties
 {
-    public class OpenTypeInt8 : OpenTypeItem
+    public class OpenTypeInt8 : OpenTypeProperty
     {
-        public OpenTypeItem Parent => throw new NotImplementedException();
-
-        public List<OpenTypeItem> Items => throw new NotImplementedException();
+        public OpenTypeInt8(OpenTypeItem parent) : base(parent)
+        {
+        }
     }
 }
