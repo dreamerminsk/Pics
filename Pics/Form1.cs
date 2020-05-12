@@ -97,13 +97,13 @@ namespace Pics
             {
                 listView1.Items.Add(ItemToView(current));
             }
-            
+
             listView1.EndUpdate();
 
             ListViewItem ItemToView(OpenTypeItem x)
             {
                 var y = new ListViewItem(x.Title);
-                y.SubItems.Add((x.Position+0).ToSize());
+                y.SubItems.Add((x.Position + 0).ToSize());
                 y.SubItems.Add(x.Size.ToSize());
                 y.Tag = x;
                 return y;
