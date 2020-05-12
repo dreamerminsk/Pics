@@ -9,13 +9,13 @@ namespace Pics.OpenType
 
         private FileInfo fileInfo;
 
-        private BinaryReader reader;
+        private readonly BinaryReader reader;
 
-        private OffsetTable offsetTable;
+        private readonly OffsetTable offsetTable;
 
-        private Headers headers;
+        private readonly Headers headers;
 
-        private Tables tables;
+        private readonly Tables tables;
 
         public OpenTypeFile(string fileName)
         {

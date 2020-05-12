@@ -6,7 +6,7 @@ namespace Pics.OpenType
 {
     public class OffsetTable : OpenTypeItem
     {
-        private OpenTypeItem mParent;
+        private readonly OpenTypeItem mParent;
 
         public OffsetTable(OpenTypeItem parent)
         {

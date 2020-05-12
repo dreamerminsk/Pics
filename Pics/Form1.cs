@@ -16,7 +16,7 @@ namespace Pics
             InitializeComponent();
         }
 
-        private void log(string message)
+        private void Log(string message)
         {
             this.Invoke(new MethodInvoker(() => richTextBox1.AppendText(message)));
         }
@@ -24,7 +24,7 @@ namespace Pics
         private void Form1_Load(object sender, EventArgs e)
         {
             var lastFontName = Properties.Settings.Default.LastFont;
-            setCurrentFile(lastFontName);
+            SetCurrentFile(lastFontName);
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -50,11 +50,11 @@ namespace Pics
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 var fileName = openFileDialog1.FileName;
-                setCurrentFile(fileName);
+                SetCurrentFile(fileName);
             }
         }
 
-        private void setCurrentFile(string fileName)
+        private void SetCurrentFile(string fileName)
         {
             if (!File.Exists(fileName))
             {
@@ -64,28 +64,30 @@ namespace Pics
             treeView1.Nodes.Clear();
             treeView1.Nodes.Add(new FileInfo(fileName).Name);
             var fs = new OpenTypeFile(fileName);
-            setListViewContent(fs);
+            SetListViewContent(fs);
             Properties.Settings.Default.LastFont = fileName;
             Properties.Settings.Default.Save();
         }
 
-        private void setUpListViewContent()
+        private void SetUpListViewContent()
         {
             if (current != null)
             {
-                setListViewContent(current.Parent);
+                SetListViewContent(current.Parent);
             }
 
         }
 
-        private void setListViewContent(OpenTypeItem content)
+        private void SetListViewContent(OpenTypeItem content)
         {
             listView1.BeginUpdate();
             listView1.Items.Clear();
             if (content != null)
             {
-                ListViewItem prevItem = new ListViewItem("..");
-                prevItem.Tag = content;
+                ListViewItem prevItem = new ListViewItem("..")
+                {
+                    Tag = content
+                };
                 listView1.Items.Add(prevItem);
                 current = content;
                 var children = content.Items.Select(x => ItemToView(x));
@@ -93,8 +95,6 @@ namespace Pics
             }
             else
             {
-                //current = content;
-                //var children = content.Items.Select(x => ItemToView(x));
                 listView1.Items.Add(ItemToView(current));
             }
             
@@ -123,7 +123,7 @@ namespace Pics
         private void Form1_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            foreach (string file in files) setCurrentFile(file);
+            foreach (string file in files) SetCurrentFile(file);
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
@@ -133,7 +133,7 @@ namespace Pics
                 var item = listView1.SelectedItems[0];
                 if (item.Text.Equals(".."))
                 {
-                    setUpListViewContent();
+                    SetUpListViewContent();
                     return;
                 }
                 var tag = item.Tag;
@@ -143,7 +143,7 @@ namespace Pics
                 }
                 if (typeof(OpenTypeItem).IsAssignableFrom(tag.GetType()))
                 {
-                    setListViewContent((OpenTypeItem)tag);
+                    SetListViewContent((OpenTypeItem)tag);
                 }
             }
 
