@@ -12,10 +12,10 @@ namespace TalonBY
             InitializeComponent();
         }
 
-        private void Form1_LoadAsync(object sender, EventArgs e)
+        private async void Form1_LoadAsync(object sender, EventArgs e)
         {
             HtmlWeb web = new HtmlWeb();
-            var html = web.Load("https://talon.by/policlinics");
+            var html = await web.LoadFromWebAsync("https://talon.by/policlinics");
             var n = 0;
             HtmlNodeCollection nodes = html.DocumentNode.SelectNodes("//div/*/h5/a");
             nodes.ToList().ForEach(x =>
