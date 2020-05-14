@@ -38,7 +38,7 @@ namespace TalonBY
                     item.SubItems.Add(clinic.Address);
                     var g = listView1.CreateGraphics();
                     var m = g.MeasureString(clinic.Name, listView1.Font);
-                    if (listView1.Columns[0].Width < (m.Width + 10))
+                    if (listView1.Columns[0].Width < (0.75 * m.Width + 10))
                     {
                         listView1.Columns[0].Width = (int)m.Width + 10;
                     }
@@ -75,7 +75,7 @@ namespace TalonBY
             var policlinics = db.Collection("policlinics");
             var query = await policlinics.GetSnapshotAsync();
             var p = query.Select(x => x.ConvertTo<Policlinic>())
-                .Where(x => x.City == null).ToList().First();
+                .Where(x => x.Address == null).ToList().First();
             var p2 = await Clinics.GetPoliclinic(p);
             var q2 = await policlinics.WhereEqualTo("Name", p2.Name).GetSnapshotAsync();
             await q2.First().Reference.SetAsync(new
