@@ -22,6 +22,14 @@ namespace TalonBY.map
                 return new Policlinic { Name = clinic.InnerText.Trim(), Ref = clinic.Attributes["href"].Value };
             }).ToList();
         }
+
+        public static async Task<Policlinic> GetPoliclinic(Policlinic p)
+        {
+            var html = await web.LoadFromWebAsync("https://talon.by" + p.Ref);
+            p.City = html.DocumentNode.SelectSingleNode("//span[@itemprop='addressLocality']").InnerText.Replace("&nbsp;", " ");
+            p.Address = html.DocumentNode.SelectSingleNode("//span[@itemprop='streetAddress']").InnerText.Replace("&nbsp;", " ");
+            return p;
+        }
     }
 
 }

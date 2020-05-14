@@ -9,6 +9,12 @@ namespace TalonBY.map
         public string Name { get; set; }
 
         [FirestoreProperty]
+        public string City { get; set; }
+
+        [FirestoreProperty]
+        public string Address { get; set; }
+
+        [FirestoreProperty]
         public string Ref { get; set; }
 
     }
