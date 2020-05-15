@@ -2,7 +2,9 @@
 using MongoDB.Driver;
 using System;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Rater
@@ -23,8 +25,16 @@ namespace Rater
               {
                   var title = x.SelectSingleNode(".//td[@class='pcatHead']");
                   if (title != null)
-                  {
-                      Console.WriteLine(title.InnerText);
+                  {                      
+                      GroupBox groupBox = new GroupBox();
+                      groupBox.Text = title.InnerText;
+                      groupBox.Width = 500;
+                      groupBox.Anchor = AnchorStyles.Left;
+                      Label l = new Label();
+                      l.Text = "LABEL";
+                      l.Location = new Point(20, 20);
+                      groupBox.Controls.Add(l);
+                      flowLayoutPanel1.Controls.Add(groupBox);
                   }
 
               });
