@@ -1,10 +1,7 @@
-﻿using HtmlAgilityPack;
-using MongoDB.Driver;
+﻿using Rater.Clients;
+using Rater.Views;
 using System;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Rater
@@ -18,31 +15,31 @@ namespace Rater
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            HtmlWeb web = new HtmlWeb();
-            var page = await web.LoadFromWebAsync("http://nnmclub.to/");
-            var torrents = page.DocumentNode.SelectNodes(".//table[@class='pline']");
-            torrents.Where(x => IsTorentBlock(x)).ToList().ForEach(x =>
-              {
-                  var title = x.SelectSingleNode(".//td[@class='pcatHead']");
-                  if (title != null)
-                  {                      
-                      GroupBox groupBox = new GroupBox();
-                      groupBox.Text = title.InnerText;
-                      groupBox.Width = 500;
-                      groupBox.Anchor = AnchorStyles.Left;
-                      Label l = new Label();
-                      l.Text = "LABEL";
-                      l.Location = new Point(20, 20);
-                      groupBox.Controls.Add(l);
-                      flowLayoutPanel1.Controls.Add(groupBox);
-                  }
+            var torrents = await NnmClub.GetTorrents();
+            torrents.ForEach(t =>
+            {
+                var view = new TorrentInfoView(t);
+                flowLayoutPanel1.Controls.Add(view);
+                if (!Users.Contains(t.User))
+                {
+                    Users.Add(t.User);
+                    var userNode = treeView1.Nodes[0].Nodes.Add(t.User);
+                    userNode.Tag = t.User;
+                }
+            });
 
-              });
         }
 
-        private bool IsTorentBlock(HtmlNode node)
+        public List<string> Users { get; set; } = new List<string>();
+
+        private void toolStripContainer1_LeftToolStripPanel_Click(object sender, EventArgs e)
         {
-            return node.SelectNodes(".//a[starts-with(@href, 'magnet')]") != null;
+
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
