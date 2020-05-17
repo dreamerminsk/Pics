@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Rater.Clients
+﻿namespace Rater.Clients
 {
     public class TorrentInfo
     {
@@ -10,6 +8,8 @@ namespace Rater.Clients
         public string Ref { get; set; }
 
         public string User { get; set; }
+
+        public int Likes { get; set; } = 0;
 
     }
 }
