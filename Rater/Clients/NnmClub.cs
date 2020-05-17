@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,8 +10,6 @@ namespace Rater.Clients
     public class NnmClub
     {
         private static readonly string HOST = "http://nnmclub.to";
-
-        private static readonly FormattableString NEXT_PAGE = $"http://nnmclub.to/forum/portal.php?start={0}#pagestart";
 
         private static readonly HtmlWeb htmlWeb = new HtmlWeb();
 
@@ -26,6 +25,11 @@ namespace Rater.Clients
             return torrents.Where(x => IsTorentBlock(x)).Select(x =>
             {
                 var torrentInfo = new TorrentInfo();
+                var cat = x.SelectSingleNode(".//img[@class='picon']");
+                if (cat != null)
+                {
+                    torrentInfo.Category = cat.Attributes["alt"].Value.Trim();
+                }
                 var title = x.SelectSingleNode(".//td[@class='pcatHead']");
                 if (title != null)
                 {
@@ -35,6 +39,14 @@ namespace Rater.Clients
                 if (user != null)
                 {
                     torrentInfo.User = user.InnerText.Trim();
+                }
+                var published = x.SelectSingleNode(".//span[@class='genmed']");
+                if (published != null)
+                {
+                    var parts = published.InnerText.Split('|');
+                    torrentInfo.Published = DateTime.Parse(
+                        parts.Last(),
+                        CultureInfo.CreateSpecificCulture("ru-RU"));
                 }
                 var likes = x.SelectSingleNode(".//img[@title='Поблагодарили']/following-sibling::span");
                 if (likes != null)

@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace Rater
 {
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -29,71 +30,128 @@ namespace Rater
             {
                 var view = new TorrentInfoView(t);
                 flowLayoutPanel1.Controls.Add(view);
-                UpdateTorrentStats(t);
-                UpdateLikeStats(t);
+                UpdateStats(t);
             });
             treeView1.BeginUpdate();
-            treeView1.Nodes[0].Nodes.Clear();
-            foreach (KeyValuePair<string, long> item in UserLikes.OrderBy(key => -key.Value))
+            GetUsersNode().Nodes.Clear();
+            foreach (KeyValuePair<string, Stats> item in UserInfos.OrderBy(key => -key.Value.Likes))
             {
-                long likes = 0;
-                UserTorrents.TryGetValue(item.Key, out likes);
-                var userNode = treeView1.Nodes[0].Nodes.Add(
-                    item.Key + " / " + likes + ", " + item.Value + " /");
+                var userNode = GetUsersNode().Nodes.Add(
+                    item.Key + " / " + item.Value.Count + ", " + item.Value.Likes + " /");
+                userNode.ToolTipText = item.Key + "\r\nторренты: " + item.Value.Count + "\r\nлайки: " + item.Value.Likes;
                 userNode.Tag = item.Key;
             }
+            GetUsersNode().Text = "Юзеры / " + UserInfos.Count + " /";
+            GetCatsNode().Nodes.Clear();
+            foreach (KeyValuePair<string, Stats> item in CatInfos.OrderBy(key => -key.Value.Likes))
+            {
+                var userNode = GetCatsNode().Nodes.Add(
+                    item.Key + " / " + item.Value.Count + ", " + item.Value.Likes + " /");
+                userNode.ToolTipText = item.Key + "\r\nторренты: " + item.Value.Count + "\r\nлайки: " + item.Value.Likes;
+                userNode.Tag = item.Key;
+            }
+            GetCatsNode().Text = "Категории / " + CatInfos.Count + " /";
+            GetMonthsNode().Nodes.Clear();
+            foreach (KeyValuePair<MonthYear, Stats> item in MonthInfos.OrderBy(key => key.Key.GetDate(1)).Reverse())
+            {
+                var userNode = GetMonthsNode().Nodes.Add(
+                    item.Key.Year + "-" + item.Key.Month.ToString("00") + " / " + item.Value.Count + ", " + item.Value.Likes + " /");
+                userNode.ToolTipText = item.Key.Year + "-" + item.Key.Month.ToString("00") + "\r\nторренты: " + item.Value.Count + "\r\nлайки: " + item.Value.Likes;
+                userNode.Tag = item.Key;
+            }
+            GetMonthsNode().Text = "Месяцы / " + CatInfos.Count + " /";
             treeView1.EndUpdate();
         }
 
-        private void UpdateTorrentStats(TorrentInfo t)
+        private void UpdateStats(TorrentInfo t)
         {
-            if (!UserTorrents.ContainsKey(t.User))
+            if (!UserInfos.ContainsKey(t.User))
             {
-                UserTorrents.Add(t.User, 1);
+                UserInfos.Add(t.User, new Stats { Count = 1, Likes = t.Likes });
             }
             else
             {
-                long total = 0;
-                UserTorrents.TryGetValue(t.User, out total);
-                UserTorrents.Remove(t.User);
-                UserTorrents.Add(t.User, ++total);
+                var total = new Stats();
+                UserInfos.TryGetValue(t.User, out total);
+                UserInfos.Remove(t.User);
+                UserInfos.Add(t.User, new Stats { Count = total.Count + 1, Likes = total.Likes + t.Likes });
             }
-        }
-
-        private void UpdateLikeStats(TorrentInfo t)
-        {
-            if (!UserLikes.ContainsKey(t.User))
+            if (!CatInfos.ContainsKey(t.Category))
             {
-                UserLikes.Add(t.User, t.Likes);
+                CatInfos.Add(t.Category, new Stats { Count = 1, Likes = t.Likes });
             }
             else
             {
-                long total = 0;
-                UserLikes.TryGetValue(t.User, out total);
-                UserLikes.Remove(t.User);
-                total += t.Likes;
-                UserLikes.Add(t.User, total);
+                var total = new Stats();
+                CatInfos.TryGetValue(t.Category, out total);
+                CatInfos.Remove(t.Category);
+                CatInfos.Add(t.Category, new Stats { Count = total.Count + 1, Likes = total.Likes + t.Likes });
+            }
+            if (!MonthInfos.ContainsKey(new MonthYear(t.Published.Month, t.Published.Year)))
+            {
+                MonthInfos.Add(new MonthYear(t.Published.Month, t.Published.Year), new Stats { Count = 1, Likes = t.Likes });
+            }
+            else
+            {
+                var total = new Stats();
+                MonthInfos.TryGetValue(new MonthYear(t.Published.Month, t.Published.Year), out total);
+                MonthInfos.Remove(new MonthYear(t.Published.Month, t.Published.Year));
+                MonthInfos.Add(new MonthYear(t.Published.Month, t.Published.Year), new Stats { Count = total.Count + 1, Likes = total.Likes + t.Likes });
             }
         }
 
         public int page = 1;
 
-        public Dictionary<string, long> UserTorrents { get; } = new Dictionary<string, long>();
-        public Dictionary<string, long> UserLikes { get; } = new Dictionary<string, long>();
-
-        private void toolStripContainer1_LeftToolStripPanel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        public Dictionary<string, Stats> UserInfos { get; } = new Dictionary<string, Stats>();
+        public Dictionary<string, Stats> CatInfos { get; } = new Dictionary<string, Stats>();
+        public Dictionary<MonthYear, Stats> MonthInfos { get; } = new Dictionary<MonthYear, Stats>();
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             ProcessNextPage();
         }
+
+        private TreeNode GetUsersNode()
+        {
+            for (int i = 0; i < treeView1.Nodes.Count; i++)
+            {
+                if (treeView1.Nodes[i].Text.StartsWith("Юзеры"))
+                {
+                    return treeView1.Nodes[i];
+                }
+            }
+            return null;
+        }
+
+        private TreeNode GetCatsNode()
+        {
+            for (int i = 0; i < treeView1.Nodes.Count; i++)
+            {
+                if (treeView1.Nodes[i].Text.StartsWith("Категории"))
+                {
+                    return treeView1.Nodes[i];
+                }
+            }
+            return null;
+        }
+
+        private TreeNode GetMonthsNode()
+        {
+            for (int i = 0; i < treeView1.Nodes.Count; i++)
+            {
+                if (treeView1.Nodes[i].Text.StartsWith("Месяцы"))
+                {
+                    return treeView1.Nodes[i];
+                }
+            }
+            return null;
+        }
     }
+
+    public class Stats
+    {
+        public long Count { get; set; }
+        public long Likes { get; set; }
+    }
+
 }
