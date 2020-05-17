@@ -36,8 +36,8 @@ namespace Rater.Clients
                 {
                     torrentInfo.User = user.InnerText.Trim();
                 }
-                var likes = x.SelectSingleNode(".//img[oldtitle='Поблагодарили']/following-sibling::span[@id]");
-                if (likes!=null)
+                var likes = x.SelectSingleNode(".//img[@title='Поблагодарили']/following-sibling::span");
+                if (likes != null)
                 {
                     int likesCount = int.Parse(likes.InnerText.Trim());
                     torrentInfo.Likes = likesCount;

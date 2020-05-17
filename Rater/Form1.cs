@@ -14,13 +14,15 @@ namespace Rater
             InitializeComponent();
         }
 
-        private async void Form1_Load(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
             timer1.Start();
         }
 
         private async void ProcessNextPage()
         {
+            toolStripStatusLabel1.Text = DateTime.Now.ToShortTimeString();
+            toolStripStatusLabel2.Text = "Loading page " + page;
             var torrents = await NnmClub.GetTorrents(page++);
             flowLayoutPanel1.Controls.Clear();
             torrents.ForEach(t =>
@@ -32,12 +34,12 @@ namespace Rater
             });
             treeView1.BeginUpdate();
             treeView1.Nodes[0].Nodes.Clear();
-            foreach (KeyValuePair<string, long> item in UserTorrents.OrderBy(key => -key.Value))
+            foreach (KeyValuePair<string, long> item in UserLikes.OrderBy(key => -key.Value))
             {
                 long likes = 0;
-                UserLikes.TryGetValue(item.Key, out likes);
+                UserTorrents.TryGetValue(item.Key, out likes);
                 var userNode = treeView1.Nodes[0].Nodes.Add(
-                    item.Key + " / " + item.Value + ", " + likes + " /");
+                    item.Key + " / " + likes + ", " + item.Value + " /");
                 userNode.Tag = item.Key;
             }
             treeView1.EndUpdate();
