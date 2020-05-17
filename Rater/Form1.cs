@@ -62,15 +62,15 @@ namespace Rater
         {
             if (!UserLikes.ContainsKey(t.User))
             {
-                UserTorrents.Add(t.User, t.Likes);
+                UserLikes.Add(t.User, t.Likes);
             }
             else
             {
                 long total = 0;
-                UserTorrents.TryGetValue(t.User, out total);
-                UserTorrents.Remove(t.User);
+                UserLikes.TryGetValue(t.User, out total);
+                UserLikes.Remove(t.User);
                 total += t.Likes;
-                UserTorrents.Add(t.User, total);
+                UserLikes.Add(t.User, total);
             }
         }
 
