@@ -91,13 +91,19 @@
             // 
             // treeView1
             // 
+            this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.FullRowSelect = true;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
             treeNode1.Name = "usersNode";
             treeNode1.Text = "Юзеры";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
+            this.treeView1.ShowLines = false;
+            this.treeView1.ShowNodeToolTips = true;
+            this.treeView1.ShowPlusMinus = false;
+            this.treeView1.ShowRootLines = false;
             this.treeView1.Size = new System.Drawing.Size(200, 645);
             this.treeView1.TabIndex = 0;
             // 
