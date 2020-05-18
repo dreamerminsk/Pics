@@ -35,6 +35,7 @@ namespace Rater
                 if (idx < flowLayoutPanel1.Controls.Count)
                 {
                     TorrentInfoView view = (TorrentInfoView)flowLayoutPanel1.Controls[idx++];
+                    view.UpdateContent(t);
                 }
                 else
                 {
@@ -56,7 +57,7 @@ namespace Rater
             }
             GetUsersNode().Text = "Юзеры / " + UserInfos.Count + " /";
             var catIdx = 0;
-            foreach (KeyValuePair<string, Stats> item in CatInfos.OrderBy(key => -key.Value.Likes))
+            foreach (KeyValuePair<string, Stats> item in CatInfos.OrderBy(key => key.Key))
             {
                 var catNode = catIdx < GetCatsNode().Nodes.Count ? GetCatsNode().Nodes[catIdx++] : GetCatsNode().Nodes.Add(catIdx++.ToString());
                 catNode.Text = item.Key + " / " + item.Value.ToShortString() + " /";

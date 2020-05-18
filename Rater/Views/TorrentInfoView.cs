@@ -1,5 +1,6 @@
 ﻿using Rater.Clients;
 using System;
+using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 
 namespace Rater.Views
@@ -18,18 +19,17 @@ namespace Rater.Views
             label1.Text = ti.Title;
             label2.Text = ti.User;
             label3.Text = $"{ti.Published.ToShortDateString()} {ti.Published.ToLongTimeString()}";
+            label6.Text = "      " + ti.Likes;
         }
 
         public void UpdateContent(TorrentInfo torrentInfo)
         {
+            Contract.Requires(torrentInfo != null);
             Tag = torrentInfo;
             label1.Text = torrentInfo.Title;
             label2.Text = torrentInfo.User;
             label3.Text = $"{torrentInfo.Published.ToShortDateString()} {torrentInfo.Published.ToLongTimeString()}";
-            label1.Update();
-            label2.Update();
-            label3.Update();
-
+            label6.Text = "      " + torrentInfo.Likes;
         }
 
         private void label3_Click(object sender, EventArgs e)
