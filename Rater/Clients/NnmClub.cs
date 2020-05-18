@@ -3,13 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Rater.Clients
 {
     public class NnmClub
     {
-        private static readonly string HOST = "http://nnmclub.to";
+        private const string FORUM_LIST = "http://nnmclub.to/forum/portal.php?start=";
+        private const string HOST = "http://nnmclub.to";
 
         private static readonly HtmlWeb htmlWeb = new HtmlWeb();
 
@@ -18,7 +20,7 @@ namespace Rater.Clients
             var url = HOST;
             if (pageNumber > 1)
             {
-                url = "http://nnmclub.to/forum/portal.php?start=" + ((pageNumber - 1) * 20).ToString() + "#pagestart";
+                url = FORUM_LIST + ((pageNumber - 1) * 20).ToString() + "#pagestart";
             }
             var page = await htmlWeb.LoadFromWebAsync(url);
             var torrents = page.DocumentNode.SelectNodes(".//table[@class='pline']");
@@ -33,7 +35,7 @@ namespace Rater.Clients
                 var title = x.SelectSingleNode(".//td[@class='pcatHead']");
                 if (title != null)
                 {
-                    torrentInfo.Title = title.InnerText.Trim();
+                    torrentInfo.Title = WebUtility.HtmlDecode(title.InnerText.Trim());
                 }
                 var user = x.SelectSingleNode(".//span[@class='genmed']/b");
                 if (user != null)
