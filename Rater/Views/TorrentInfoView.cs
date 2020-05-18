@@ -26,6 +26,10 @@ namespace Rater.Views
             label1.Text = torrentInfo.Title;
             label2.Text = torrentInfo.User;
             label3.Text = $"{torrentInfo.Published.ToShortDateString()} {torrentInfo.Published.ToLongTimeString()}";
+            label1.Update();
+            label2.Update();
+            label3.Update();
+
         }
 
         private void label3_Click(object sender, EventArgs e)

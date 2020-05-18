@@ -29,6 +29,7 @@ namespace Rater
             toolStripStatusLabel2.Text = "Loading page " + page;
             var torrents = await NnmClub.GetTorrents(page++).ConfigureAwait(true);
             var idx = 0;
+            //flowLayoutPanel1.SuspendLayout();
             torrents.ForEach(t =>
             {
                 if (idx < flowLayoutPanel1.Controls.Count)
@@ -43,6 +44,7 @@ namespace Rater
                 }
                 UpdateStats(t);
             });
+            //flowLayoutPanel1.ResumeLayout();
             treeView1.BeginUpdate();
             var userIdx = 0;
             foreach (KeyValuePair<string, Stats> item in UserInfos.OrderBy(key => -key.Value.Likes))
