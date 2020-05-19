@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Rater.Clients
 {
-    public class NnmClub
+    public static class NnmClub
     {
         private const string FORUM_LIST = "http://nnmclub.to/forum/portal.php?start=";
         private const string HOST = "http://nnmclub.to";
@@ -22,7 +22,7 @@ namespace Rater.Clients
             {
                 url = FORUM_LIST + ((pageNumber - 1) * 20).ToString() + "#pagestart";
             }
-            var page = await htmlWeb.LoadFromWebAsync(url);
+            var page = await htmlWeb.LoadFromWebAsync(url).ConfigureAwait(false);
             var torrents = page.DocumentNode.SelectNodes(".//table[@class='pline']");
             return torrents.Where(x => IsTorentBlock(x)).Select(x =>
             {
@@ -50,10 +50,32 @@ namespace Rater.Clients
                         parts.Last(),
                         CultureInfo.CreateSpecificCulture("ru-RU"));
                 }
+
+                var post = x.SelectSingleNode(".//span[@class='portbody']");
+                if (post != null)
+                {
+                    var text = WebUtility.HtmlDecode(post.InnerHtml.Trim())
+                    .Replace("<br>", "\r\n").Replace("<b>", "").Replace("</b>", "");
+                    while (text.Contains("<a"))
+                    {
+                        var startPos = text.IndexOf("<a", StringComparison.OrdinalIgnoreCase);
+                        var endPos = text.IndexOf("</a>", startPos, StringComparison.OrdinalIgnoreCase);
+                        if (startPos > -1 && endPos > -1)
+                        {
+                            text = text.Replace(text.Substring(startPos, endPos - startPos + 4), "");
+                        }
+                        else
+                        {
+                            text = text.Replace("<a", "");
+                        }
+                    }
+                    torrentInfo.Text = text;
+                }
+
                 var likes = x.SelectSingleNode(".//img[@title='Поблагодарили']/following-sibling::span");
                 if (likes != null)
                 {
-                    int likesCount = int.Parse(likes.InnerText.Trim());
+                    int likesCount = int.Parse(likes.InnerText.Trim(), NumberStyles.Integer, CultureInfo.CurrentCulture);
                     torrentInfo.Likes = likesCount;
                 }
                 return torrentInfo;

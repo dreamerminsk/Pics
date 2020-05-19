@@ -15,26 +15,23 @@ namespace Rater.Views
 
         private void toolStripContainer1_ContentPanel_Load(object sender, EventArgs e)
         {
-            TorrentInfo ti = (TorrentInfo)Tag;
-            label1.Text = ti.Title;
-            label2.Text = ti.User;
-            label3.Text = $"{ti.Published.ToShortDateString()} {ti.Published.ToLongTimeString()}";
-            label6.Text = "      " + ti.Likes;
+            SetContent((TorrentInfo)Tag);
         }
 
         public void UpdateContent(TorrentInfo torrentInfo)
         {
             Contract.Requires(torrentInfo != null);
             Tag = torrentInfo;
-            label1.Text = torrentInfo.Title;
-            label2.Text = torrentInfo.User;
-            label3.Text = $"{torrentInfo.Published.ToShortDateString()} {torrentInfo.Published.ToLongTimeString()}";
-            label6.Text = "      " + torrentInfo.Likes;
+            SetContent((TorrentInfo)Tag);
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        private void SetContent(TorrentInfo ti)
         {
-
+            label1.Text = ti.Title;
+            label2.Text = ti.User;
+            label3.Text = $"{ti.Published.ToShortDateString()} {ti.Published.ToLongTimeString()}";
+            label6.Text = "      " + ti.Likes;
+            richTextBox1.Text = ti.Text;
         }
     }
 }

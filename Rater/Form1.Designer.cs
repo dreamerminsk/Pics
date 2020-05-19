@@ -132,6 +132,8 @@
             this.treeView1.ShowRootLines = false;
             this.treeView1.Size = new System.Drawing.Size(200, 645);
             this.treeView1.TabIndex = 0;
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeView1.Click += new System.EventHandler(this.treeView1_Click);
             // 
             // flowLayoutPanel1
             // 

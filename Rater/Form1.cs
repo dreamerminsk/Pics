@@ -26,54 +26,54 @@ namespace Rater
         private async void ProcessNextPage()
         {
             toolStripStatusLabel1.Text = DateTime.Now.ToShortTimeString();
-            toolStripStatusLabel2.Text = "Loading page " + page;
-            var torrents = await NnmClub.GetTorrents(page++).ConfigureAwait(true);
+            toolStripStatusLabel2.Text = "Loading page " + Page;
+            var torrents = await NnmClub.GetTorrents(Page++).ConfigureAwait(true);
+            Torrents.AddRange(torrents);
             var idx = 0;
-            //flowLayoutPanel1.SuspendLayout();
-            torrents.ForEach(t =>
-            {
-                if (idx < flowLayoutPanel1.Controls.Count)
-                {
-                    TorrentInfoView view = (TorrentInfoView)flowLayoutPanel1.Controls[idx++];
-                    view.UpdateContent(t);
-                }
-                else
-                {
-                    var view = new TorrentInfoView(t);
-                    flowLayoutPanel1.Controls.Add(view);
-                    ++idx;
-                }
-                UpdateStats(t);
-            });
-            //flowLayoutPanel1.ResumeLayout();
+            torrents.OrderBy(t => -t.Likes).Take(20).ToList().ForEach(t =>
+              {
+                  if (idx < flowLayoutPanel1.Controls.Count)
+                  {
+                      TorrentInfoView view = (TorrentInfoView)flowLayoutPanel1.Controls[idx++];
+                      view.UpdateContent(t);
+                  }
+                  else
+                  {
+                      var view = new TorrentInfoView(t);
+                      flowLayoutPanel1.Controls.Add(view);
+                      ++idx;
+                  }
+                  UpdateStats(t);
+              });
+
             treeView1.BeginUpdate();
             var userIdx = 0;
             foreach (KeyValuePair<string, Stats> item in UserInfos.OrderBy(key => -key.Value.Likes))
             {
                 var userNode = userIdx < GetUsersNode().Nodes.Count ? GetUsersNode().Nodes[userIdx++] : GetUsersNode().Nodes.Add(userIdx++.ToString());
-                userNode.Text = item.Key + " / " + item.Value.ToShortString() + " /";
+                userNode.Text = item.Key + " — " + item.Value.ToShortString();
                 userNode.ToolTipText = item.Key + "\r\n" + item.Value.ToString();
                 userNode.Tag = item.Key;
             }
-            GetUsersNode().Text = "Юзеры / " + UserInfos.Count + " /";
+            GetUsersNode().Text = "Юзеры — " + UserInfos.Count;
             var catIdx = 0;
             foreach (KeyValuePair<string, Stats> item in CatInfos.OrderBy(key => key.Key))
             {
                 var catNode = catIdx < GetCatsNode().Nodes.Count ? GetCatsNode().Nodes[catIdx++] : GetCatsNode().Nodes.Add(catIdx++.ToString());
-                catNode.Text = item.Key + " / " + item.Value.ToShortString() + " /";
+                catNode.Text = item.Key + " — " + item.Value.ToShortString();
                 catNode.ToolTipText = item.Key + "\r\n" + item.Value.ToString();
                 catNode.Tag = item.Key;
             }
-            GetCatsNode().Text = "Категории / " + CatInfos.Count + " /";
+            GetCatsNode().Text = "Категории — " + CatInfos.Count;
             var monthIdx = 0;
             foreach (KeyValuePair<MonthYear, Stats> item in MonthInfos.OrderBy(key => key.Key.GetDate(1)).Reverse())
             {
                 var monthNode = monthIdx < GetMonthsNode().Nodes.Count ? GetMonthsNode().Nodes[monthIdx++] : GetMonthsNode().Nodes.Add(monthIdx++.ToString());
-                monthNode.Text = item.Key.ToString() + " / " + item.Value.ToShortString() + " /";
+                monthNode.Text = item.Key.ToString() + " — " + item.Value.ToShortString();
                 monthNode.ToolTipText = item.Key.ToString() + "\r\n" + item.Value.ToString();
                 monthNode.Tag = item.Key;
             }
-            GetMonthsNode().Text = "Месяцы / " + MonthInfos.Count + " /";
+            GetMonthsNode().Text = "Месяцы — " + MonthInfos.Count;
             treeView1.EndUpdate();
         }
 
@@ -114,7 +114,9 @@ namespace Rater
             }
         }
 
-        public int page = 1;
+        public int Page { get; set; } = 1;
+
+        public List<TorrentInfo> Torrents { get; } = new List<TorrentInfo>();
 
         public Dictionary<string, Stats> UserInfos { get; } = new Dictionary<string, Stats>();
         public Dictionary<string, Stats> CatInfos { get; } = new Dictionary<string, Stats>();
@@ -165,6 +167,17 @@ namespace Rater
         {
             Settings.Default.TreeViewWidth = splitContainer1.SplitterDistance;
             Settings.Default.Save();
+        }
+
+        private void treeView1_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            MessageBox.Show(treeView1.SelectedNode.Name + "\r\n" + treeView1.SelectedNode.FullPath);
         }
     }
 
