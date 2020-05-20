@@ -5,7 +5,6 @@ using Rater.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -30,15 +29,29 @@ namespace Rater
 
         private async Task ProcessNextPageAsync()
         {
-            toolStripStatusLabel1.Text = DateTime.Now.ToShortTimeString();
+            toolStripStatusLabel1.Text = DateTime.Now.ToLongTimeString();
             toolStripStatusLabel2.Text = "Loading page " + Page;
             var torrents = await NnmClub.GetTorrents(Page++).ConfigureAwait(true);
             Torrents.AddRange(torrents);
             var idx = 0;
-            Torrents.ForEach(t => UpdateStats(t)); ;
+            Torrents.ForEach(t => UpdateStats(t));
             Torrents.Where(t =>
             {
-                return t.Category.Equals(Filter, StringComparison.InvariantCulture);
+                var found = false;
+                if (!string.IsNullOrEmpty(Filter.Category))
+                {
+                    found = t.Category.Equals(Filter.Category, StringComparison.InvariantCultureIgnoreCase);
+                }
+                if ((!found) && (!string.IsNullOrEmpty(Filter.Month)))
+                {
+                    var my = new MonthYear(t.Published);
+                    found = my.ToString().Equals(Filter.Month, StringComparison.InvariantCultureIgnoreCase);
+                }
+                if ((!found) && (!string.IsNullOrEmpty(Filter.User)))
+                {
+                    found = t.User.Equals(Filter.User, StringComparison.InvariantCultureIgnoreCase);
+                }
+                return found;
             }).OrderByDescending(t => t.Likes).Take(32).ToList().ForEach(t =>
               {
                   if (idx < flowLayoutPanel1.Controls.Count)
@@ -125,18 +138,13 @@ namespace Rater
 
         public int Page { get; set; } = 1;
 
-        public string Filter { get; set; } = "Аниме и Манга";
+        public Filter Filter { get; set; } = new Filter();
 
         public List<TorrentInfo> Torrents { get; } = new List<TorrentInfo>();
 
         public Dictionary<string, Stats> UserInfos { get; } = new Dictionary<string, Stats>();
         public Dictionary<string, Stats> CatInfos { get; } = new Dictionary<string, Stats>();
         public Dictionary<MonthYear, Stats> MonthInfos { get; } = new Dictionary<MonthYear, Stats>();
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            ProcessNextPageAsync();
-        }
 
         private TreeNode GetUsersNode()
         {
@@ -188,7 +196,35 @@ namespace Rater
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            Filter = treeView1.SelectedNode.Text.Split('—').First().Trim();
+            var node = treeView1.SelectedNode;
+            if (node.Text.StartsWith("Категории", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Filter.Category = null;
+            }
+            else if (node.Text.StartsWith("Месяцы", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Filter.Month = null;
+            }
+            else if (node.Text.StartsWith("Юзеры", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Filter.User = null;
+            }
+            else if (node.FullPath.StartsWith("Категории", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var title = node.FullPath.Split('\\').Last().Trim();
+                Filter.Category = title.Split('—').First().Trim();
+            }
+            else if (node.FullPath.StartsWith("Месяцы", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var title = node.FullPath.Split('\\').Last().Trim();
+                Filter.Month = title.Split('—').First().Trim();
+            }
+            else if (node.FullPath.StartsWith("Юзеры", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var title = node.FullPath.Split('\\').Last().Trim();
+                Filter.User = title.Split('—').First().Trim();
+            }
+
         }
     }
 
