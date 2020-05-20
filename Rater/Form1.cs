@@ -5,6 +5,9 @@ using Rater.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Rater
@@ -19,18 +22,24 @@ namespace Rater
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            timer1.Start();
+            Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(16))
+                .ObserveOn(this)
+                .Subscribe(async t => await ProcessNextPageAsync().ConfigureAwait(true));
             splitContainer1.SplitterDistance = Settings.Default.TreeViewWidth;
         }
 
-        private async void ProcessNextPage()
+        private async Task ProcessNextPageAsync()
         {
             toolStripStatusLabel1.Text = DateTime.Now.ToShortTimeString();
             toolStripStatusLabel2.Text = "Loading page " + Page;
             var torrents = await NnmClub.GetTorrents(Page++).ConfigureAwait(true);
             Torrents.AddRange(torrents);
             var idx = 0;
-            torrents.OrderBy(t => -t.Likes).Take(20).ToList().ForEach(t =>
+            Torrents.ForEach(t => UpdateStats(t)); ;
+            Torrents.Where(t =>
+            {
+                return t.Category.Equals(Filter, StringComparison.InvariantCulture);
+            }).OrderByDescending(t => t.Likes).Take(32).ToList().ForEach(t =>
               {
                   if (idx < flowLayoutPanel1.Controls.Count)
                   {
@@ -40,12 +49,12 @@ namespace Rater
                   else
                   {
                       var view = new TorrentInfoView(t);
+                      view.Dock = DockStyle.None;
                       flowLayoutPanel1.Controls.Add(view);
                       ++idx;
                   }
-                  UpdateStats(t);
-              });
 
+              });
             treeView1.BeginUpdate();
             var userIdx = 0;
             foreach (KeyValuePair<string, Stats> item in UserInfos.OrderBy(key => -key.Value.Likes))
@@ -116,6 +125,8 @@ namespace Rater
 
         public int Page { get; set; } = 1;
 
+        public string Filter { get; set; } = "Аниме и Манга";
+
         public List<TorrentInfo> Torrents { get; } = new List<TorrentInfo>();
 
         public Dictionary<string, Stats> UserInfos { get; } = new Dictionary<string, Stats>();
@@ -124,7 +135,7 @@ namespace Rater
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            ProcessNextPage();
+            ProcessNextPageAsync();
         }
 
         private TreeNode GetUsersNode()
@@ -177,8 +188,15 @@ namespace Rater
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            MessageBox.Show(treeView1.SelectedNode.Name + "\r\n" + treeView1.SelectedNode.FullPath);
+            Filter = treeView1.SelectedNode.Text.Split('—').First().Trim();
         }
+    }
+
+    public class Filter
+    {
+        public string Category { get; set; } = null;
+        public string Month { get; set; } = null;
+        public string User { get; set; } = null;
     }
 
     public class Stats
