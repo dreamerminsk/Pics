@@ -1,4 +1,4 @@
-﻿using Rater.Clients;
+﻿using Rater.Models;
 using System;
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;

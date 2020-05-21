@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Rater.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

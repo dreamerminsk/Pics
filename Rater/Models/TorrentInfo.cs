@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rater.Clients
+namespace Rater.Models
 {
     public class TorrentInfo
     {

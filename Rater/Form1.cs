@@ -1,4 +1,6 @@
-﻿using Rater.Clients;
+﻿using LinqToDB;
+using Rater.Clients;
+using Rater.Models;
 using Rater.Properties;
 using Rater.Utils;
 using Rater.Views;
@@ -25,6 +27,15 @@ namespace Rater
                 .ObserveOn(this)
                 .Subscribe(async t => await ProcessNextPageAsync().ConfigureAwait(true));
             splitContainer1.SplitterDistance = Settings.Default.TreeViewWidth;
+            using (var db = new NnmContext())
+            {
+                (from p in db.Categories
+                 orderby p.Name ascending
+                 select p).ToList().ForEach(c => { CatInfos.Add(c.Name, new Stats { Count = 0, Likes = 0 }); });
+                (from p in db.Users
+                 orderby p.Name ascending
+                 select p).ToList().ForEach(u => { UserInfos.Add(u.Name, new Stats { Count = 0, Likes = 0 }); });
+            }
         }
 
         private async Task ProcessNextPageAsync()
@@ -104,6 +115,10 @@ namespace Rater
             if (!UserInfos.ContainsKey(t.User))
             {
                 UserInfos.Add(t.User, new Stats { Count = 1, Likes = t.Likes });
+                using (var db = new NnmContext())
+                {
+                    db.Insert(new UserInfo { Name = t.User });
+                }
             }
             else
             {
@@ -115,6 +130,10 @@ namespace Rater
             if (!CatInfos.ContainsKey(t.Category))
             {
                 CatInfos.Add(t.Category, new Stats { Count = 1, Likes = t.Likes });
+                using (var db = new NnmContext())
+                {
+                    db.Insert(new CategoryInfo { Name = t.Category });
+                }
             }
             else
             {
