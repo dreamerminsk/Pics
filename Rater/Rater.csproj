@@ -326,13 +326,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\NnmClub.cs" />
-    <Compile Include="Clients\TorrentInfo.cs" />
+    <Compile Include="Models\CategoryInfo.cs" />
+    <Compile Include="Models\TorrentInfo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\MonthYear.cs" />
