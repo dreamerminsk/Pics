@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 
 namespace Rater
@@ -112,6 +113,13 @@ namespace Rater
 
         private void UpdateStats(TorrentInfo t)
         {
+            using (var db = new NnmContext())
+            {
+                var uri = new Uri("http://nnmclub.to/" + t.Ref);
+                var query = HttpUtility.ParseQueryString(uri.Query);
+                var tt = query.Get("t");
+                db.InsertOrReplace(new TorrentInfo { ID = int.Parse(tt), Title = t.Title });
+            }
             if (!UserInfos.ContainsKey(t.User))
             {
                 UserInfos.Add(t.User, new Stats { Count = 1, Likes = t.Likes });

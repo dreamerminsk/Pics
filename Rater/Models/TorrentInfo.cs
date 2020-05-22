@@ -1,10 +1,16 @@
-﻿using System;
+﻿using LinqToDB.Mapping;
+using System;
 
 namespace Rater.Models
 {
+    [Table(Name = "Torrents")]
     public class TorrentInfo
     {
 
+        [PrimaryKey, Identity]
+        public int ID { get; set; }
+
+        [Column(Name = "Title"), NotNull]
         public string Title { get; set; }
 
         public string Text { get; set; }
