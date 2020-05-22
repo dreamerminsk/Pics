@@ -7,7 +7,7 @@ namespace Rater.Models
     public class TorrentInfo
     {
 
-        [PrimaryKey, Identity]
+        [PrimaryKey]
         public int ID { get; set; }
 
         [Column(Name = "Title"), NotNull]

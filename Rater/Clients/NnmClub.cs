@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Rater.Clients
 {
@@ -28,7 +29,7 @@ namespace Rater.Clients
             return torrents.Where(x => IsTorentBlock(x)).Select(x =>
             {
                 var torrentInfo = new TorrentInfo();
-                var cat = x.SelectSingleNode(".//img[@class='picon']");
+                var cat = x.SelectSingleNode(".//img[starts-with(@class, 'picon')]");
                 if (cat != null)
                 {
                     torrentInfo.Category = cat.Attributes["alt"].Value.Trim();
@@ -37,6 +38,11 @@ namespace Rater.Clients
                 if (title != null)
                 {
                     torrentInfo.Title = WebUtility.HtmlDecode(title.InnerText.Trim());
+                    var rf = title.SelectSingleNode(".//a[@class='pgenmed']");
+                    if (rf != null)
+                    {
+                        torrentInfo.Ref = rf.Attributes["href"].Value;
+                    }
                 }
                 var user = x.SelectSingleNode(".//span[@class='genmed']/b");
                 if (user != null)
@@ -78,6 +84,12 @@ namespace Rater.Clients
                 {
                     int likesCount = int.Parse(likes.InnerText.Trim(), NumberStyles.Integer, CultureInfo.CurrentCulture);
                     torrentInfo.Likes = likesCount;
+                }
+
+                if (string.IsNullOrEmpty(torrentInfo.Category))
+                {
+                    torrentInfo.Category = "UNKNOWN";
+                    MessageBox.Show(torrentInfo.Title + "\r\n" + torrentInfo.Text);
                 }
                 return torrentInfo;
             }).ToList();

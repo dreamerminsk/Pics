@@ -135,6 +135,7 @@ namespace Rater
                 UserInfos.Remove(t.User);
                 UserInfos.Add(t.User, new Stats { Count = total.Count + 1, Likes = total.Likes + t.Likes });
             }
+            
             if (!CatInfos.ContainsKey(t.Category))
             {
                 CatInfos.Add(t.Category, new Stats { Count = 1, Likes = t.Likes });
