@@ -15,12 +15,15 @@ namespace Rater.Models
 
         public string Text { get; set; }
 
+        [Column(Name = "Category")]
         public string Category { get; set; }
 
         public string Ref { get; set; }
 
+        [Column(Name = "User")]
         public string User { get; set; }
 
+        [Column(Name ="Published")]
         public DateTime Published { get; set; }
 
         public int Likes { get; set; } = 0;

@@ -118,7 +118,8 @@ namespace Rater
                 var uri = new Uri("http://nnmclub.to/" + t.Ref);
                 var query = HttpUtility.ParseQueryString(uri.Query);
                 var tt = query.Get("t");
-                db.InsertOrReplace(new TorrentInfo { ID = int.Parse(tt), Title = t.Title });
+                t.ID = int.Parse(tt);
+                db.InsertOrReplace(t);
             }
             if (!UserInfos.ContainsKey(t.User))
             {
@@ -135,7 +136,7 @@ namespace Rater
                 UserInfos.Remove(t.User);
                 UserInfos.Add(t.User, new Stats { Count = total.Count + 1, Likes = total.Likes + t.Likes });
             }
-            
+
             if (!CatInfos.ContainsKey(t.Category))
             {
                 CatInfos.Add(t.Category, new Stats { Count = 1, Likes = t.Likes });
