@@ -23,9 +23,13 @@ namespace Rater.Models
         [Column(Name = "User")]
         public string User { get; set; }
 
-        [Column(Name ="Published")]
+        [Column(Name = "Published")]
         public DateTime Published { get; set; }
 
+        [Column(Name ="Magnet")]
+        public string Magnet { get; set; }
+
+        [Column(Name = "Likes")]
         public int Likes { get; set; } = 0;
 
     }

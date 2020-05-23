@@ -86,10 +86,10 @@ namespace Rater.Clients
                     torrentInfo.Likes = likesCount;
                 }
 
-                if (string.IsNullOrEmpty(torrentInfo.Category))
+                var magnet = x.SelectSingleNode(".//a[starts-with(@href, 'magnet')]");
+                if (magnet != null)
                 {
-                    torrentInfo.Category = "UNKNOWN";
-                    MessageBox.Show(torrentInfo.Title + "\r\n" + torrentInfo.Text);
+                    torrentInfo.Magnet = magnet.Attributes["href"].Value;
                 }
                 return torrentInfo;
             }).ToList();
