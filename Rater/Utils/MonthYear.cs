@@ -5,7 +5,7 @@ namespace Rater.Utils
 {
     public struct MonthYear : IComparable<MonthYear>
     {
-        private const string MonthYearFormat = "^((?<mes>MM).*(?<ano>YYYY))|((?<ano>YYYY).*(?<mes>MM))|((?<mes>MM).*(?<ano>YY))|((?<ano>YY).*(?<mes>MM))$";
+        //private const string MonthYearFormat = "^((?<mes>MM).*(?<ano>YYYY))|((?<ano>YYYY).*(?<mes>MM))|((?<mes>MM).*(?<ano>YY))|((?<ano>YY).*(?<mes>MM))$";
 
         public int Month { get; private set; }
 

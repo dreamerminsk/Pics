@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Rater.Clients
 {
